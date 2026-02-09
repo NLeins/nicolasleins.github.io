@@ -1,0 +1,85 @@
+# Personal Information
+first_name: Nicolas
+last_name: Leins
+full_name: Nicolas Leins
+email: leins@zib.de
+
+# Address
+address:
+  street: Takustraße 7
+  postal_code: 14195
+  city: Berlin
+  country: Deutschland
+  room: Room 3023
+
+# Credentials and Social Links
+credentials:
+  orcid: "0000-0002-9802-5411"
+  googlescholar: DuqZJvsAAAAJ&hl=de&authuser=1
+  github: nleins
+  linkedin: nicolas-leins-b5678920a
+  researchgate: https://www.researchgate.net/profile/Nicolas-Leins?ev=hdr_xprf
+  zib: https://iol.zib.de/team/nicolasleins.html
+
+# Bio
+bio_short: "I am a researcher and PhD student at the Zuse Institute Berlin. I explore the intersection of Human-Computer Interaction and Agentic AI."
+bio_long: "I am a Researcher and Ph.D. Student at the Zuse Institute Berlin (ZIB). My work bridges the gap between technical innovation and human-centric design, focusing on how we interact with intelligent agents and how we can use them to improve our lives."
+goal: "My goal is to understand and improve how people collaborate with AI systems in applied contexts like robotics, AR, and VR. Recent developments in AI offer great opportunities but need to be studied and understood in depth."
+
+# Education (array)
+education:
+  - degree: Ph.D. in Computational Science
+    institution: Zuse Institute Berlin (ZIB)
+    status: Currently
+    start_year: 2023
+    description: ""
+  - degree: M.S. in Business Informatics and Digital Transformation
+    institution: University of Potsdam
+    status: "2025"
+    start_year: 2023
+    description: ""
+  - degree: B.S. in Business Informatics
+    institution: University of Potsdam
+    status: "2022"
+    start_year: 2019
+    description: ""
+
+# Professional Experience (array)
+positions:
+  - title: Researcher & PhD Student
+    institution: Zuse Institute Berlin
+    start_date: "2023"
+    current: true
+    description: "Focusing on Multi-Agent AI Systems and their application in real-world scenarios."
+  - title: Research Assistant
+    institution: University of Potsdam
+    start_date: "Nov 2022"
+    end_date: "Sep 2023"
+    current: false
+    description: "Education for the Digital World (Weizenbaum Institute)."
+  - title: Student Assistant (VR)
+    institution: University of Potsdam
+    start_date: "Oct 2020"
+    end_date: "Dec 2021"
+    current: false
+    description: "VR Development for TechR - a classroom simulation for teacher education."
+  - title: Intern (Industrial Software)
+    institution: F.EE Industrieautomation
+    start_date: "Sep 2021"
+    end_date: "Oct 2021"
+    current: false
+    description: "Industrial Software Development"
+
+# Research Interests (array)
+research_interests:
+  - name: Multi-Agent AI Systems
+    description: "Coordination and collaboration between autonomous agents."
+  - name: Robotics
+    description: "Human-robot interaction and control interfaces."
+  - name: Educational Technology
+    description: "Leveraging AI to improve learning outcomes."
+  - name: XR (AR/VR)
+    description: "Immersive interfaces for data visualization and control."
+
+# Profile Image
+profile_image: /assets/images/profile.webp

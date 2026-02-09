@@ -1,0 +1,29 @@
+title: Nicolas Leins
+email: leins@zib.de
+description: >-
+  Researcher and PhD Student at the Zuse Institute Berlin
+url: "https://nicolasleins.com"
+logo: /assets/images/profile.webp
+image: /assets/images/profile.webp
+
+# Minima theme settings
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Social links (footer)
+github_username: nleins
+linkedin_username: nicolas-leins-b5678920a
+scholar_userid: DuqZJvsAAAAJ&hl=de&authuser=1
+researchgate_username: Nicolas-Leins
+
+# Build settings
+markdown: kramdown
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - "Personal Publications.bib"
