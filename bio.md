@@ -13,7 +13,7 @@ description: Learn about Nicolas Leins' academic background, research at ZIB, an
   </p>
 </div>
 
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+<div class="bio-grid">
 
   <!-- Left Column -->
   <div>

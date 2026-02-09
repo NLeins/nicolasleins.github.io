@@ -196,21 +196,21 @@ def format_entry(entry):
 
     # If there's an image, create a two-column layout
     if image_file:
-        html_parts.append('<div style="display: grid; grid-template-columns: 180px 1fr; gap: 24px; align-items: center;">')
-        html_parts.append(f'  <div style="width: 180px; height: 180px; overflow: hidden; border-radius: 4px; flex-shrink: 0; will-change: transform; transform: translateZ(0); contain: layout style paint;">')
-        html_parts.append(f'    <img src="/assets/images/{image_file}" alt="Publication" style="width: 100%; height: 100%; object-fit: cover;">')
+        html_parts.append('<div class="publication-grid">')
+        html_parts.append('  <div class="publication-image">')
+        html_parts.append(f'    <img src="/assets/images/{image_file}" alt="Publication">')
         html_parts.append('  </div>')
-        html_parts.append('  <div>')
+        html_parts.append('  <div class="publication-content">')
 
     # Title
     title = entry.get('title', 'Untitled')
     title = clean_braces(title)
-    html_parts.append(f"    <h3 style=\"margin-top: 0; font-size: 1.3em; margin-bottom: 12px;\">{title}</h3>")
+    html_parts.append(f"    <h3 class=\"publication-title\">{title}</h3>")
 
     # Authors
     if 'author' in entry:
         authors = format_authors(entry['author'])
-        html_parts.append(f"    <div style=\"color: #4b5563; margin-bottom: 12px; font-size: 1.05em;\">{authors}</div>")
+        html_parts.append(f"    <div class=\"publication-authors\">{authors}</div>")
 
     # Venue and year
     venue_parts = []
@@ -232,7 +232,7 @@ def format_entry(entry):
         venue_parts.append(' '.join(date_parts))
 
     if venue_parts:
-        html_parts.append(f"    <div style=\"color: #6b7280; font-size: 1em; margin-bottom: 14px;\">{', '.join(venue_parts)}</div>")
+        html_parts.append(f"    <div class=\"publication-venue\">{', '.join(venue_parts)}</div>")
 
     # Links
     links = []
@@ -249,7 +249,7 @@ def format_entry(entry):
         links.append(f"<a href=\"https://doi.org/{entry['doi']}\">DOI</a>")
 
     if links:
-        html_parts.append(f"    <div style=\"font-size: 1.05em;\">{' | '.join(links)}</div>")
+        html_parts.append(f"    <div class=\"publication-links\">{' | '.join(links)}</div>")
 
     # Close grid if image was present
     if image_file:
