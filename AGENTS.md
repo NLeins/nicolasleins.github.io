@@ -1,220 +1,113 @@
-# Repository Documentation
+# AGENTS.md
 
 ## Overview
-This is a Jekyll-based personal publication/research website for sharing academic publications and research projects.
+This is a Jekyll-based personal publication/research website for sharing academic publications and research projects. The site uses Python scripts to generate publication pages from BibTeX entries.
 
-## Key Files & Structure
+## Build/Lint/Test Commands
 
-### Main Content Files
-- **Personal Publications.bib** - BibTeX bibliography file containing all publications and projects
-- **update_publications.py** - Python script that parses the .bib file and generates publications.md
-- **publications.md** - Auto-generated publications page (output of update_publications.py)
-- **_config.yml** - Jekyll configuration
-- **index.md, blog.md, bio.md** - Main site pages
-- **assets/images/** - Directory containing publication thumbnail images
+### Jekyll Site
+- `bundle install` – Install Ruby dependencies (Gemfile.lock present)
+- `bundle exec jekyll serve` – Run local development server at http://localhost:4000
+- `bundle exec jekyll build` – Build site to `_site/` directory
+- `bundle exec jekyll clean` – Clean generated site
 
-### Data & Includes
-- **_data/person.yml** - Personal information data
-- **_includes/** - Jekyll template includes
-- **_posts/** - Blog posts directory
+### Python Script
+- `python update_publications.py` – Parse `Personal Publications.bib` and generate `publications.md`
+- `python -m pytest` – No test suite currently defined; consider adding `test_update_publications.py`
 
-## Workflow: Adding New Publications
+### Linting and Formatting
+- **No linting configuration** found in the repository.
+- For Python, follow PEP 8 (use `black`, `flake8`, or `pylint` if added).
+- For Ruby, consider adding `.rubocop.yml` for style enforcement.
+- For Markdown, use consistent heading levels and line breaks.
 
-### Step 1: Add to Bibliography
-1. Add new entry to `Personal Publications.bib` in BibTeX format
-2. Use consistent cite key format: `lastname_shortitle_year` (e.g., `leins_investigating_2026`)
+### Testing
+- No test suite currently exists.
+- To add Python tests, create `test_update_publications.py` with unit tests for `parse_bibtex`, `format_entry`, etc.
+- For Jekyll, consider using `htmlproofer` (via `bundle exec jekyll build` and `htmlproofer ./_site`) to check links and HTML validity.
 
-### Step 2: Add Image
-1. Add corresponding publication image to `assets/images/`
-2. Supported formats: `.png`, `.jpg`
-3. Recommended size: Square aspect ratio works best (180x180px display)
+## Code Style Guidelines
 
-### Step 3: Update Image Mappings
-1. Open `update_publications.py`
-2. Add entry to `IMAGE_MAPPINGS` dictionary (lines 12-17):
-   ```python
-   'cite_key': 'image_filename',
-   ```
-3. Example:
-   ```python
-   'gonnermann-muller_facet_2026': 'facet.png',
-   ```
+### Python (`update_publications.py`)
+- **Imports**: Standard library first, then third-party, then local modules.
+- **Naming**: `snake_case` for functions, variables, modules; `UPPER_CASE` for constants (e.g., `IMAGE_MAPPINGS`, `MONTH_MAP`).
+- **Docstrings**: Use triple-quoted strings with description, parameters, and returns.
+- **Error handling**: Use `try-except` with specific exception types; provide helpful error messages.
+- **File paths**: Prefer `pathlib.Path` over `os.path` for cross-platform compatibility.
+- **String formatting**: Use f-strings for readability (e.g., `f"Found {len(entries)} entries"`).
+- **Regular expressions**: Use raw strings (`r'pattern'`); compile repeated patterns with `re.compile`.
+- **Type hints**: Not currently used; consider adding for clarity.
 
-### Step 4: Generate Publications Page
-Run: `python update_publications.py`
+### Ruby / Jekyll
+- **Gemfile**: Follow standard Ruby gem syntax; pin versions only when necessary.
+- **Jekyll config** (`_config.yml`): Keep YAML clean, use comments for sections.
+- **Liquid templates** (`_includes/`, `_layouts/`):
+  - Indent consistently (two spaces).
+  - Use `{% raw %}{%-{% endraw %}` and `{% raw %}-%}{% endraw %}` to trim whitespace where appropriate.
+  - Include ARIA roles and semantic HTML in markup.
+- **SCSS** (`assets/main.scss`): Extend the Minima theme; add custom styles after `@import "minima";`.
 
-This generates:
-- Parses all BibTeX entries
-- Groups publications by year (descending order)
-- Creates HTML cards with images, titles, authors, venues, and links
-- Outputs to `publications.md`
+### Markdown Content
+- **Front matter**: Required for Jekyll pages (layout, title, permalink).
+- **Headings**: Use ATX style (`#`, `##`, …) and match the theme’s hierarchy.
+- **Links**: Use relative URLs for internal links (e.g., `[Bio](/bio/)`).
+- **Images**: Optimize with WebP format; specify meaningful alt text.
+- **Code blocks**: Use triple backticks with language identifier.
 
-## Current Publications
+### BibTeX (`Personal Publications.bib`)
+- **Cite keys**: Format as `lastname_shorttitle_year` (e.g., `leins_investigating_2026`).
+- **Authors**: Use “Last, First and Last, First” format.
+- **Required fields**: `title`, `author`, `year`, `url` (or `doi`), `journal`/`booktitle`.
+- **Optional fields**: `month`, `abstract`, `file`.
+- **Protective braces**: Use `{…}` only for preserving capitalization; the script strips them.
 
-### 2024
-- **gonnermann-muller_value_2024** - "Value by Design: Reducing Cognitive Load..." (ICIS 2024)
-  - Image: `fig_ICIS.png`
-- **leins_comparing_2024** - "Comparing head-mounted and handheld augmented reality..." (Journal on Multimodal User Interfaces)
-  - Image: `fig_springerVR.jpg`
+### File Organization
+- **Jekyll standard**:
+  - `_includes/` – reusable HTML snippets
+  - `_layouts/` – page templates
+  - `_posts/` – blog posts (format `YYYY-MM-DD-title.md`)
+  - `_data/` – YAML data files (`person.yml`)
+- **Assets**:
+  - `assets/images/` – publication thumbnails and site images
+  - `assets/main.scss` – custom styles
+- **Generated files**:
+  - `publications.md` – auto-generated; **do not edit manually**.
+  - `_site/` – built site; ignored by Git.
 
-### 2025
-- **leins_ur5e_2025** - "UR5e Augmented Reality Interface on Meta Quest 3"
-  - Image: `fig_RobotAR.png`
+## Publication Workflow (Condensed)
 
-### 2026
-- **haase_within-model_2026** - "Within-Model vs Between-Prompt Variability in Large Language Models..." (arXiv)
-  - Image: `Within_Between.png`
-- **gonnermann-muller_facet_2026** - "FACET: Multi-Agent AI Supporting Teachers..." (arXiv)
-  - Image: `facet.png`
-- **leins_investigating_2026** - "Investigating the Influence of Spatial Ability in Augmented Reality-assisted Robot Programming" (arXiv)
-  - Image: `SA-in-robiotics.png`
+### Adding a New Publication
+1. Add BibTeX entry to `Personal Publications.bib` with required fields.
+2. Place optimized image (WebP, ≤300 KB, square aspect ratio) in `assets/images/`.
+3. Add mapping `'cite_key': 'image_filename.webp'` to `IMAGE_MAPPINGS` in `update_publications.py`.
+4. Run `python update_publications.py`.
+5. Commit changes (BibTeX, image, script, and generated `publications.md`).
 
-## Image Mappings (IMAGE_MAPPINGS Dictionary)
+### Updating an Existing Publication
+1. Edit the entry in `Personal Publications.bib`.
+2. Run `python update_publications.py`.
+3. Commit changes.
 
-All publication cite keys must have a corresponding entry mapping to an image file. Current mappings in `update_publications.py`:
+### Removing a Publication
+1. Delete entry from `Personal Publications.bib`.
+2. Optionally remove image file and mapping.
+3. Run `python update_publications.py`.
+4. Commit changes.
 
-```python
-IMAGE_MAPPINGS = {
-    'gonnermann-muller_value_2024': 'fig_ICIS.png',
-    'leins_comparing_2024': 'fig_springerVR.jpg',
-    'leins_ur5e_2025': 'fig_RobotAR.png',
-    'haase_within-model_2026': 'Within_Between.png',
-    'gonnermann-muller_facet_2026': 'facet.png',
-    'leins_investigating_2026': 'SA-in-robiotics.png',
-}
-```
+## Agent Instructions
+- **Always run** `python update_publications.py` after modifying `Personal Publications.bib` or `IMAGE_MAPPINGS`.
+- The script is idempotent; safe to run multiple times.
+- Publications are grouped by year (newest first).
+- Check `IMAGE_MAPPINGS` before adding new BibTeX entries—mapping is required for images to display.
+- Use consistent cite-key naming: `lastname_shortitle_year`.
+- Never edit `publications.md` manually; it is generated by the script.
+- When adding images, optimize them (WebP, 200–250 px square, <300 KB) to maintain site performance.
 
-## Publication Card Format
+## Cursor / Copilot Rules
+- No `.cursor/rules/` or `.cursorrules` files present.
+- No `.github/copilot-instructions.md` file present.
+- Consider adding repository-specific rules if using Cursor or GitHub Copilot.
 
-Each publication is displayed as an HTML card with:
-- **Image**: 180x180px thumbnail (if mapped in IMAGE_MAPPINGS)
-- **Title**: From BibTeX `title` field
-- **Authors**: From BibTeX `author` field (formatted as "First Last" names)
-- **Venue & Year**: From `journal`/`booktitle` and `year` fields
-- **Links**: Generated from `url` and `doi` fields
-  - GitHub URLs → "Code" link
-  - arXiv URLs → "arXiv" link
-  - DOI → "DOI" link
-  - Other URLs → "Link"
+---
 
-## BibTeX Entry Fields
-
-Required/common fields in entries:
-- `title` - Publication title
-- `author` - Author list (format: "Last, First and Last, First")
-- `year` - Publication year
-- `month` - Publication month (optional)
-- `journal` - Journal name (for articles)
-- `booktitle` - Conference/proceedings title (for conference papers)
-- `url` - Link to publication or resource
-- `doi` - DOI identifier (optional)
-- `abstract` - Publication abstract (stored but not displayed)
-- `file` - Zotero file references (metadata, not displayed)
-
-## Script Details (update_publications.py)
-
-### Key Functions
-- **parse_bibtex()** - Parses BibTeX file and extracts entries
-- **format_entry()** - Formats a single entry as HTML card
-- **format_authors()** - Converts author names from "Last, First" to "First Last"
-- **clean_braces()** - Removes protective braces from BibTeX text
-- **generate_publications_md()** - Groups entries by year and generates full MD file
-
-### Processing
-- Entries grouped by year in descending order
-- Protective braces `{Text}` removed from titles and venues
-- HTML cards use CSS Grid for image + content layout
-- Images display only if mapped in IMAGE_MAPPINGS
-- Output file: `publications.md`
-
-## Common Tasks
-
-### Add a new publication
-1. Add BibTeX entry to `Personal Publications.bib`
-2. Save image to `assets/images/`
-3. Add mapping to `IMAGE_MAPPINGS` in `update_publications.py`
-4. Run `python update_publications.py`
-5. Commit changes
-
-### Update existing publication
-1. Edit entry in `Personal Publications.bib`
-2. Run `python update_publications.py`
-3. Commit changes
-
-### Update publication image
-1. Replace image file in `assets/images/`
-2. No script changes needed (mapping stays the same)
-3. Run `python update_publications.py` to regenerate
-4. Commit changes
-
-### Remove a publication
-1. Delete entry from `Personal Publications.bib`
-2. Optionally remove image from `assets/images/` if unused
-3. Optionally remove mapping from `IMAGE_MAPPINGS`
-4. Run `python update_publications.py`
-5. Commit changes
-
-## Assets & Images
-
-Directory: `assets/images/`
-
-Current images:
-- `fig_ICIS.webp` - 2024 ICIS publication
-- `fig_springerVR.webp` - Springer VR journal article
-- `fig_RobotAR.webp` - Robot AR interface
-- `Within_Between.webp` - LLM variability study
-- `facet.webp` - FACET education AI system
-- `SA-in-robotics.webp` - Spatial ability in AR robotics
-- `profile.jpg` - Profile picture
-
-## Image Optimization
-
-**IMPORTANT:** Images must be optimized before adding to the repo to avoid performance issues.
-
-### Requirements
-- **Display size:** 180x180px
-- **File size target:** 100-300 KB per image
-- **Recommended dimensions:** 200-250px (accounts for retina displays and scales down smoothly)
-- **Aspect ratio:** Square (1:1 ratio works best)
-
-### Format Recommendations
-- **WebP:** Preferred format for this repo. Modern, smaller files, widely supported in browsers. Tools: cwebp (CLI) or online converters
-- **PNG:** Use for images with sharp edges or text. Compress with TinyPNG or ImageOptim
-- **JPG:** Use for photographs. Quality 75-85% works well
-
-### Optimization Process
-1. **Resize** to 200-250px max dimension (square)
-2. **Compress** using:
-   - TinyPNG/TinyJPG (online, very effective)
-   - ImageOptim (macOS)
-   - ImageMagick command line: `convert image.png -resize 250x250 -quality 85 output.jpg`
-3. **Target:** Final file size should be **< 300 KB** (ideally 100-200 KB)
-
-### Performance Impact
-- Unoptimized large images (1-3+ MB) cause:
-  - Slower page loads
-  - Increased bandwidth usage
-  - Browser rendering strain, especially during animations
-  - Potential flickering during hover effects
-
-### Verification
-After adding images, check file sizes:
-```bash
-ls -lh assets/images/
-```
-Each publication image should be well under 500 KB.
-
-## Technology Stack
-- **Jekyll** - Static site generator
-- **Ruby** - Jekyll framework
-- **Python 3** - Publication processing script
-- **BibTeX** - Bibliography format
-- **Markdown** - Content format
-
-## Notes for Claude Agents
-- This is a Jekyll site with Python-driven publication management
-- Always run `update_publications.py` after modifying `Personal Publications.bib` or `IMAGE_MAPPINGS`
-- The script is idempotent—safe to run multiple times
-- All publications are grouped by year (newest first)
-- Check `IMAGE_MAPPINGS` before adding new BibTeX entries—mapping is required for images to display
-- Use consistent cite key naming: `lastname_shortitle_year`
+*This file is intended for agentic coding assistants working in this repository. Keep it updated as the project evolves.*

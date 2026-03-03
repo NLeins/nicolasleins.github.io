@@ -62,6 +62,19 @@ permalink: /publications/
     </div>
   </div>
   </div>
+  <div class="card publication-card">
+  <div class="publication-grid">
+    <div class="publication-image">
+      <img src="/assets/images/Multi-Agent-Framework.webp" alt="Publication">
+    </div>
+    <div class="publication-content">
+      <h3 class="publication-title">Beyond Static Instruction: A Multi-agent AI Framework for Adaptive Augmented Reality Robot Training</h3>
+      <div class="publication-authors">Nicolas Leins, Jana Gonnermann-Müller, Malte Teichmann, Sebastian Pokutta</div>
+      <div class="publication-venue">Jan 2026</div>
+      <div class="publication-links"><a href="http://arxiv.org/abs/2603.00016">arXiv</a> | <a href="https://doi.org/10.48550/arXiv.2603.00016">DOI</a></div>
+    </div>
+  </div>
+  </div>
 </div>
 
 <div style="margin-bottom: 40px;">

@@ -21,6 +21,14 @@ python update_publications.py
 
 This will regenerate `publications.md` with your latest publications.
 
+### Mapping Images to New Publications
+
+To show a thumbnail next to a new publication:
+1. Add an optimized WebP image to `assets/images/` (square or rectangular is fine; aim for ≤300 KB).
+2. Add a mapping in `update_publications.py` under `IMAGE_MAPPINGS` using the BibTeX cite key:
+   - Example: `'leins_investigating_2026': 'SA-in-robotics.webp'`
+3. Run `python update_publications.py` to regenerate `publications.md`.
+
 ## Deployment
 
 Push to GitHub and enable GitHub Pages in repository settings:
