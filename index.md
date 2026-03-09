@@ -12,6 +12,9 @@ description: Portfolio and research of Nicolas Leins, PhD student at Zuse Instit
       {{ site.data.person.bio_short }}
     </p>
     <p class="hero-subtext">
+      My PhD supervisor is <a href="{{ site.data.person.phd_supervisor.url }}">Prof. Dr. Sebastian Pokutta</a>.
+    </p>
+    <p class="hero-subtext">
       {{ site.data.person.goal }}
     </p>
     <br>

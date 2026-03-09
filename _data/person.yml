@@ -19,12 +19,15 @@ credentials:
   github: nleins
   linkedin: nicolas-leins-b5678920a
   researchgate: https://www.researchgate.net/profile/Nicolas-Leins?ev=hdr_xprf
-  zib: https://iol.zib.de/team/nicolasleins.html
+  zib: https://iol.zib.de/team/nicolas-leins.html
 
 # Bio
 bio_short: "I am a researcher and PhD student at the Zuse Institute Berlin. I explore the intersection of Human-Computer Interaction and Agentic AI."
 bio_long: "I am a Researcher and Ph.D. Student at the Zuse Institute Berlin (ZIB). My work bridges the gap between technical innovation and human-centric design, focusing on how we interact with intelligent agents and how we can use them to improve our lives."
 goal: "My goal is to understand and improve how people collaborate with AI systems in applied contexts like robotics, AR, and VR. Recent developments in AI offer great opportunities but need to be studied and understood in depth."
+phd_supervisor:
+  name: Prof. Dr. Sebastian Pokutta
+  url: https://www.pokutta.com/
 
 # Education (array)
 education:
@@ -32,7 +35,7 @@ education:
     institution: Zuse Institute Berlin (ZIB)
     status: Currently
     start_year: 2023
-    description: ""
+    description: "PhD supervisor: Prof. Dr. Sebastian Pokutta"
   - degree: M.S. in Business Informatics and Digital Transformation
     institution: University of Potsdam
     status: "2025"
