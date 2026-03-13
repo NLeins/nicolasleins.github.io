@@ -70,8 +70,8 @@ permalink: /publications/
     <div class="publication-content">
       <h3 class="publication-title">Beyond Static Instruction: A Multi-agent AI Framework for Adaptive Augmented Reality Robot Training</h3>
       <div class="publication-authors">Nicolas Leins, Jana Gonnermann-Müller, Malte Teichmann, Sebastian Pokutta</div>
-      <div class="publication-venue">Jan 2026</div>
-      <div class="publication-links"><a href="http://arxiv.org/abs/2603.00016">arXiv</a> | <a href="https://doi.org/10.48550/arXiv.2603.00016">DOI</a></div>
+      <div class="publication-venue">Companion Proceedings of the 21st ACM/IEEE International Conference on Human-Robot Interaction, 2026</div>
+      <div class="publication-links"><a href="https://doi.org/10.1145/3776734.3794542">Link</a> | <a href="https://doi.org/10.1145/3776734.3794542">DOI</a></div>
     </div>
   </div>
   </div>
