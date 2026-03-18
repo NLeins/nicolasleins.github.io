@@ -5,6 +5,7 @@ Usage: python update_publications.py
 """
 
 import re
+import html
 from collections import defaultdict
 from pathlib import Path
 
@@ -185,6 +186,55 @@ def clean_braces(text):
     return text
 
 
+def _bibtex_escape_value(value: str) -> str:
+    # Keep this conservative: BibTeX values will be shown to humans and copied.
+    # We only normalize whitespace and escape internal braces minimally.
+    value = re.sub(r"\s+", " ", str(value)).strip()
+    return value
+
+
+def bibtex_from_entry(entry: dict) -> str:
+    """Create a BibTeX snippet for clipboard copy."""
+    entry_type = entry.get("type", "misc")
+    cite_key = entry.get("cite_key", "missing_key")
+
+    # A simple, readable field ordering. Only include fields we actually have.
+    preferred_order = [
+        "title",
+        "author",
+        "journal",
+        "booktitle",
+        "publisher",
+        "year",
+        "month",
+        "pages",
+        "doi",
+        "url",
+        "note",
+    ]
+
+    fields = []
+    for k in preferred_order:
+        if k in entry and entry.get(k):
+            fields.append((k, entry.get(k)))
+
+    # Include any remaining fields (except noisy ones), stable-sorted.
+    excluded = {"type", "cite_key", "file", "abstract", "keywords", "language", "urldate", "issn", "isbn", "series", "address"}
+    for k in sorted(entry.keys()):
+        if k in excluded or k in dict(fields):
+            continue
+        v = entry.get(k)
+        if v:
+            fields.append((k, v))
+
+    lines = [f"@{entry_type}{{{cite_key},"]
+    for k, v in fields:
+        vv = _bibtex_escape_value(v)
+        lines.append(f"\t{k} = {{{vv}}},")
+    lines.append("}")
+    return "\n".join(lines)
+
+
 def format_entry(entry):
     """Format a single BibTeX entry as HTML card."""
     cite_key = entry.get('cite_key', '')
@@ -235,22 +285,31 @@ def format_entry(entry):
     if venue_parts:
         html_parts.append(f"    <div class=\"publication-venue\">{', '.join(venue_parts)}</div>")
 
-    # Links
-    links = []
-    if 'url' in entry:
-        url = entry['url']
-        if 'github.com' in url:
-            links.append(f"<a href=\"{url}\">Code</a>")
-        elif 'arxiv.org' in url:
-            links.append(f"<a href=\"{url}\">arXiv</a>")
-        else:
-            links.append(f"<a href=\"{url}\">Link</a>")
+    # Links: "Cite" (copies BibTeX) + "Preprint"/"DOI"
+    bibtex = bibtex_from_entry(entry)
+    # Avoid literal newlines inside an HTML attribute.
+    # Also encode braces to avoid Jekyll/Liquid parsing `{{ ... }}` inside attributes.
+    bibtex_attr = (
+        html.escape(bibtex, quote=True)
+        .replace("\r", "")
+        .replace("\n", "&#10;")
+        .replace("{", "&#123;")
+        .replace("}", "&#125;")
+    )
+    links = [f"<a class=\"publication-cite\" href=\"#\" data-bibtex=\"{bibtex_attr}\">Cite</a>"]
 
-    if 'doi' in entry:
-        links.append(f"<a href=\"https://doi.org/{entry['doi']}\">DOI</a>")
+    url = entry.get("url", "")
+    doi = entry.get("doi", "")
+    is_arxiv = isinstance(url, str) and ("arxiv.org" in url.lower())
 
-    if links:
-        html_parts.append(f"    <div class=\"publication-links\">{' | '.join(links)}</div>")
+    if is_arxiv and url:
+        links.append(f"<a href=\"{url}\">Preprint</a>")
+    elif doi:
+        links.append(f"<a href=\"https://doi.org/{doi}\">DOI</a>")
+    elif url:
+        links.append(f"<a href=\"{url}\">Link</a>")
+
+    html_parts.append(f"    <div class=\"publication-links\">{' | '.join(links)}</div>")
 
     # Close grid if image was present
     if image_file:
@@ -281,6 +340,43 @@ def generate_publications_md(entries, scholar_id=None):
         "permalink: /publications/",
         "---",
         "<style>.post-header { display: none; }</style>",
+        "<script>",
+        "(function () {",
+        "  function copyText(text) {",
+        "    if (navigator.clipboard && navigator.clipboard.writeText) {",
+        "      return navigator.clipboard.writeText(text);",
+        "    }",
+        "    return new Promise(function (resolve, reject) {",
+        "      try {",
+        "        var ta = document.createElement('textarea');",
+        "        ta.value = text;",
+        "        ta.setAttribute('readonly', '');",
+        "        ta.style.position = 'fixed';",
+        "        ta.style.top = '-1000px';",
+        "        document.body.appendChild(ta);",
+        "        ta.select();",
+        "        var ok = document.execCommand('copy');",
+        "        document.body.removeChild(ta);",
+        "        ok ? resolve() : reject(new Error('copy failed'));",
+        "      } catch (e) {",
+        "        reject(e);",
+        "      }",
+        "    });",
+        "  }",
+        "",
+        "  document.addEventListener('click', function (e) {",
+        "    var a = e.target && e.target.closest ? e.target.closest('a.publication-cite') : null;",
+        "    if (!a) return;",
+        "    e.preventDefault();",
+        "    var bibtex = a.getAttribute('data-bibtex') || '';",
+        "    copyText(bibtex).then(function () {",
+        "      var old = a.textContent;",
+        "      a.textContent = 'Copied';",
+        "      window.setTimeout(function () { a.textContent = old; }, 1200);",
+        "    });",
+        "  });",
+        "})();",
+        "</script>",
         "",
         "<h1 style=\"font-size: 2.5em; margin-bottom: 20px;\">Publications</h1>",
     ]
