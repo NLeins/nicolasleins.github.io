@@ -50,6 +50,19 @@ permalink: /publications/
   <div class="card publication-card">
   <div class="publication-grid">
     <div class="publication-image">
+      <img src="/assets/images/Multi-Agent-Framework.webp" alt="Publication">
+    </div>
+    <div class="publication-content">
+      <h3 class="publication-title">Beyond Static Instruction: A Multi-agent AI Framework for Adaptive Augmented Reality Robot Training</h3>
+      <div class="publication-authors">Nicolas Leins, Jana Gonnermann-Müller, Malte Teichmann, Sebastian Pokutta</div>
+      <div class="publication-venue">Companion Proceedings of the 21st ACM/IEEE International Conference on Human-Robot Interaction, Mar 2026</div>
+      <div class="publication-links"><a class="publication-cite" href="#" data-bibtex="@inproceedings&#123;leins_beyond_2026,&#10;	title = &#123;Beyond &#123;Static&#125; &#123;Instruction&#125;: &#123;A&#125; &#123;Multi&#125;-agent &#123;AI&#125; &#123;Framework&#125; for &#123;Adaptive&#125; &#123;Augmented&#125; &#123;Reality&#125; &#123;Robot&#125; &#123;Training&#125;&#125;,&#10;	author = &#123;Leins, Nicolas and Gonnermann-Müller, Jana and Teichmann, Malte and Pokutta, Sebastian&#125;,&#10;	booktitle = &#123;Companion &#123;Proceedings&#125; of the 21st &#123;ACM&#125;/&#123;IEEE&#125; &#123;International&#125; &#123;Conference&#125; on &#123;Human&#125;-&#123;Robot&#125; &#123;Interaction&#125;&#125;,&#10;	publisher = &#123;Association for Computing Machinery&#125;,&#10;	year = &#123;2026&#125;,&#10;	pages = &#123;989--993&#125;,&#10;	doi = &#123;10.1145/3776734.3794542&#125;,&#10;	url = &#123;https://doi.org/10.1145/3776734.3794542&#125;,&#10;	shorttitle = &#123;Beyond &#123;Static&#125; &#123;Instruction&#125;&#125;,&#10;&#125;">Cite</a> | <a href="https://doi.org/10.1145/3776734.3794542">DOI</a></div>
+    </div>
+  </div>
+  </div>
+  <div class="card publication-card">
+  <div class="publication-grid">
+    <div class="publication-image">
       <img src="/assets/images/SA-in-robotics.webp" alt="Publication">
     </div>
     <div class="publication-content">
@@ -99,19 +112,6 @@ permalink: /publications/
     </div>
   </div>
   </div>
-  <div class="card publication-card">
-  <div class="publication-grid">
-    <div class="publication-image">
-      <img src="/assets/images/Multi-Agent-Framework.webp" alt="Publication">
-    </div>
-    <div class="publication-content">
-      <h3 class="publication-title">Beyond Static Instruction: A Multi-agent AI Framework for Adaptive Augmented Reality Robot Training</h3>
-      <div class="publication-authors">Nicolas Leins, Jana Gonnermann-Müller, Malte Teichmann, Sebastian Pokutta</div>
-      <div class="publication-venue">Companion Proceedings of the 21st ACM/IEEE International Conference on Human-Robot Interaction, 2026</div>
-      <div class="publication-links"><a class="publication-cite" href="#" data-bibtex="@inproceedings&#123;leins_beyond_2026,&#10;	title = &#123;Beyond &#123;Static&#125; &#123;Instruction&#125;: &#123;A&#125; &#123;Multi&#125;-agent &#123;AI&#125; &#123;Framework&#125; for &#123;Adaptive&#125; &#123;Augmented&#125; &#123;Reality&#125; &#123;Robot&#125; &#123;Training&#125;&#125;,&#10;	author = &#123;Leins, Nicolas and Gonnermann-Müller, Jana and Teichmann, Malte and Pokutta, Sebastian&#125;,&#10;	booktitle = &#123;Companion &#123;Proceedings&#125; of the 21st &#123;ACM&#125;/&#123;IEEE&#125; &#123;International&#125; &#123;Conference&#125; on &#123;Human&#125;-&#123;Robot&#125; &#123;Interaction&#125;&#125;,&#10;	publisher = &#123;Association for Computing Machinery&#125;,&#10;	year = &#123;2026&#125;,&#10;	pages = &#123;989--993&#125;,&#10;	doi = &#123;10.1145/3776734.3794542&#125;,&#10;	url = &#123;https://doi.org/10.1145/3776734.3794542&#125;,&#10;	shorttitle = &#123;Beyond &#123;Static&#125; &#123;Instruction&#125;&#125;,&#10;&#125;">Cite</a> | <a href="https://doi.org/10.1145/3776734.3794542">DOI</a></div>
-    </div>
-  </div>
-  </div>
 </div>
 
 <div style="margin-bottom: 40px;">
@@ -124,7 +124,7 @@ permalink: /publications/
     <div class="publication-content">
       <h3 class="publication-title">UR5e Augmented Reality Interface on Meta Quest 3</h3>
       <div class="publication-authors">Nicolas Leins</div>
-      <div class="publication-venue">2025</div>
+      <div class="publication-venue">Aug 2025</div>
       <div class="publication-links"><a class="publication-cite" href="#" data-bibtex="@misc&#123;leins_ur5e_2025,&#10;	title = &#123;&#123;UR5e&#125; &#123;Augmented&#125; &#123;Reality&#125; &#123;Interface&#125; on &#123;Meta&#125; &#123;Quest&#125; 3&#125;,&#10;	author = &#123;Leins, Nicolas&#125;,&#10;	year = &#123;2025&#125;,&#10;	url = &#123;https://github.com/NLeins/UR5e-Augmented-Reality-Quest3-Interface&#125;,&#10;&#125;">Cite</a> | <a href="https://github.com/NLeins/UR5e-Augmented-Reality-Quest3-Interface">Link</a></div>
     </div>
   </div>

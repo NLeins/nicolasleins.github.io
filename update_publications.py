@@ -48,6 +48,21 @@ MONTH_MAP = {
     'december': 12,
 }
 
+MONTH_NAME = {
+    1: "Jan",
+    2: "Feb",
+    3: "Mar",
+    4: "Apr",
+    5: "May",
+    6: "Jun",
+    7: "Jul",
+    8: "Aug",
+    9: "Sep",
+    10: "Oct",
+    11: "Nov",
+    12: "Dec",
+}
+
 
 def month_to_num(month):
     """Convert month string to number; unknown -> 0."""
@@ -60,6 +75,46 @@ def month_to_num(month):
         return MONTH_MAP[cleaned]
     if len(cleaned) >= 3 and cleaned[:3] in MONTH_MAP:
         return MONTH_MAP[cleaned[:3]]
+    return 0
+
+
+def month_num_to_name(month_num: int) -> str:
+    """Convert month number to short English name; unknown -> ''."""
+    try:
+        return MONTH_NAME.get(int(month_num), "")
+    except (TypeError, ValueError):
+        return ""
+
+
+_DATE_LIKE_FIELDS = ("date", "eventdate", "issued", "published", "urldate")
+_YYYY_MM_RE = re.compile(r"(?P<y>\d{4})-(?P<m>\d{1,2})(?:-(?P<d>\d{1,2}))?")
+
+
+def inferred_month_num(entry: dict) -> int:
+    """
+    Get best-guess month for an entry.
+
+    Prefer explicit BibTeX `month`. If missing, fall back to common date-like
+    fields (e.g., `date`, `eventdate`, `urldate`) in YYYY-MM(-DD) form.
+    """
+    m = month_to_num(entry.get("month"))
+    if m:
+        return m
+
+    for k in _DATE_LIKE_FIELDS:
+        v = entry.get(k)
+        if not v:
+            continue
+        mobj = _YYYY_MM_RE.search(str(v))
+        if not mobj:
+            continue
+        try:
+            mm = int(mobj.group("m"))
+        except (TypeError, ValueError):
+            continue
+        if 1 <= mm <= 12:
+            return mm
+
     return 0
 
 
@@ -274,8 +329,13 @@ def format_entry(entry):
 
     # Build date string
     date_parts = []
-    if 'month' in entry:
-        date_parts.append(entry['month'].capitalize())
+    if 'month' in entry and entry.get("month"):
+        date_parts.append(entry["month"].capitalize())
+    else:
+        inferred = inferred_month_num(entry)
+        inferred_name = month_num_to_name(inferred)
+        if inferred_name:
+            date_parts.append(inferred_name)
     if 'year' in entry:
         date_parts.append(entry['year'])
 
@@ -394,7 +454,7 @@ def generate_publications_md(entries, scholar_id=None):
         by_year[year].sort(
             key=lambda e: (
                 year_to_int(e.get('year')),
-                month_to_num(e.get('month')),
+                inferred_month_num(e),
                 clean_braces(e.get('title', '')).lower(),
             ),
             reverse=True,
