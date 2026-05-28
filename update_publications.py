@@ -18,7 +18,8 @@ IMAGE_MAPPINGS = {
     'gonnermann-muller_facet_2026': 'facet.webp',
     'leins_investigating_2026': 'SA-in-robotics.webp',
     'gonnermann-muller_stable_2026': 'adhd.webp',
-    'leins_beyond_2026': 'Multi-Agent-Framework.webp'
+    'leins_beyond_2026': 'Multi-Agent-Framework.webp',
+    'gonnermann-muller_llm-based_2026': 'stability_education.webp'
 }
 
 MONTH_MAP = {

@@ -50,6 +50,19 @@ permalink: /publications/
   <div class="card publication-card">
   <div class="publication-grid">
     <div class="publication-image">
+      <img src="/assets/images/stability_education.webp" alt="Publication">
+    </div>
+    <div class="publication-content">
+      <h3 class="publication-title">LLM-Based Educational Simulation: Evaluating Temporal Student Persona Stability Across ADHD Profiles</h3>
+      <div class="publication-authors">Jana Gonnermann-Müller, Jennifer Haase, Nicolas Leins, Thomas Kosch, Sebastian Pokutta</div>
+      <div class="publication-venue">May 2026</div>
+      <div class="publication-links"><a class="publication-cite" href="#" data-bibtex="@misc&#123;gonnermann-muller_llm-based_2026,&#10;	title = &#123;&#123;LLM&#125;-&#123;Based&#125; &#123;Educational&#125; &#123;Simulation&#125;: &#123;Evaluating&#125; &#123;Temporal&#125; &#123;Student&#125; &#123;Persona&#125; &#123;Stability&#125; &#123;Across&#125; &#123;ADHD&#125; &#123;Profiles&#125;&#125;,&#10;	author = &#123;Gonnermann-Müller, Jana and Haase, Jennifer and Leins, Nicolas and Kosch, Thomas and Pokutta, Sebastian&#125;,&#10;	publisher = &#123;arXiv&#125;,&#10;	year = &#123;2026&#125;,&#10;	month = &#123;may&#125;,&#10;	doi = &#123;10.48550/arXiv.2605.06307&#125;,&#10;	url = &#123;http://arxiv.org/abs/2605.06307&#125;,&#10;	note = &#123;arXiv:2605.06307 [cs.HC]&#125;,&#10;	shorttitle = &#123;&#123;LLM&#125;-&#123;Based&#125; &#123;Educational&#125; &#123;Simulation&#125;&#125;,&#10;&#125;">Cite</a> | <a href="http://arxiv.org/abs/2605.06307">Preprint</a></div>
+    </div>
+  </div>
+  </div>
+  <div class="card publication-card">
+  <div class="publication-grid">
+    <div class="publication-image">
       <img src="/assets/images/Multi-Agent-Framework.webp" alt="Publication">
     </div>
     <div class="publication-content">
