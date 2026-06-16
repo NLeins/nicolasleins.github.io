@@ -22,12 +22,15 @@ credentials:
   zib: https://iol.zib.de/team/nicolas-leins.html
 
 # Bio
-bio_short: "I am a researcher and PhD student at the Zuse Institute Berlin. I explore the intersection of Human-Computer Interaction and Agentic AI."
-bio_long: "I am a Researcher and Ph.D. Student at the Zuse Institute Berlin (ZIB). My work bridges the gap between technical innovation and human-centric design, focusing on how we interact with intelligent agents and how we can use them to improve our lives."
+bio_short: "I am a researcher and Ph.D. student at Zuse Institute Berlin exploring the intersection of Human-Computer Interaction and Agentic AI."
+bio_long: "I am a Researcher and Ph.D. Student at Zuse Institute Berlin (ZIB), working at the intersection of technical innovation and human-centric design. My research focuses on how we interact with intelligent agents — and how they can improve our lives."
 goal: "My goal is to understand and improve how people collaborate with AI systems in applied contexts like robotics, AR, and VR. Recent developments in AI offer great opportunities but need to be studied and understood in depth."
 phd_supervisor:
   name: Prof. Dr. Sebastian Pokutta
   url: https://www.pokutta.com/
+co_supervisor:
+  name: Dr. Jana Gonnermann-Müller
+  url: https://janagonnermann.com/
 
 # Education (array)
 education:
@@ -35,7 +38,7 @@ education:
     institution: Zuse Institute Berlin (ZIB)
     status: Currently
     start_year: 2023
-    description: "PhD supervisor: Prof. Dr. Sebastian Pokutta"
+    description: "Ph.D. supervisor: Prof. Dr. Sebastian Pokutta"
   - degree: M.Sc. in Business Informatics and Digital Transformation
     institution: University of Potsdam
     status: "2025"
@@ -49,7 +52,7 @@ education:
 
 # Professional Experience (array)
 positions:
-  - title: Researcher & PhD Student
+  - title: Researcher & Ph.D. Student
     institution: Zuse Institute Berlin
     start_date: "2023"
     current: true

@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Home
-description: Portfolio and research of Nicolas Leins, PhD student at Zuse Institute Berlin specializing in Human-Computer Interaction and Agentic AI.
+description: Portfolio and research of Nicolas Leins, Ph.D. student at Zuse Institute Berlin specializing in Human-Computer Interaction and Agentic AI.
 ---
 <style>.post-header { display: none; }</style>
 
@@ -12,7 +12,7 @@ description: Portfolio and research of Nicolas Leins, PhD student at Zuse Instit
       {{ site.data.person.bio_short }}
     </p>
     <p class="hero-subtext">
-      My PhD supervisor is <a href="{{ site.data.person.phd_supervisor.url }}">Prof. Dr. Sebastian Pokutta</a>.
+      My Ph.D. supervisor is <a href="{{ site.data.person.phd_supervisor.url }}">Prof. Dr. Sebastian Pokutta</a>, co-supervised by <a href="{{ site.data.person.co_supervisor.url }}">Dr. Jana Gonnermann-Müller</a>.
     </p>
     <p class="hero-subtext">
       {{ site.data.person.goal }}

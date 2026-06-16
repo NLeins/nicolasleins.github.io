@@ -25,7 +25,8 @@ description: Learn about Nicolas Leins' academic background, research at ZIB, an
       <div style="color: #6b7280; font-size: 0.9em; margin-bottom: 10px;">{{ edu.status }}</div>
       {% if edu.degree contains "Ph.D." %}
       <div style="color: #4b5563; font-size: 0.95em; margin-bottom: 10px;">
-        PhD supervisor: <a href="{{ site.data.person.phd_supervisor.url }}">{{ site.data.person.phd_supervisor.name }}</a>
+        Ph.D. supervisor: <a href="{{ site.data.person.phd_supervisor.url }}">{{ site.data.person.phd_supervisor.name }}</a><br>
+        Co-supervisor: <a href="{{ site.data.person.co_supervisor.url }}">{{ site.data.person.co_supervisor.name }}</a>
       </div>
       {% endif %}
       {% if forloop.last == false %}
