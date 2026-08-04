@@ -50,6 +50,19 @@ permalink: /publications/
   <div class="card publication-card">
   <div class="publication-grid">
     <div class="publication-image">
+      <img src="/assets/images/AAAI_orchestration.webp" alt="Publication">
+    </div>
+    <div class="publication-content">
+      <h3 class="publication-title">When Does LLM Orchestration Pay Off? A Controlled Evaluation of Accuracy, Cost, and Task Difficulty</h3>
+      <div class="publication-authors">Nicolas Leins, Nico Pelleriti, Jana Gonnermann-Müller, Sebastian Pokutta</div>
+      <div class="publication-venue">Aug 2026</div>
+      <div class="publication-links"><a class="publication-cite" href="#" data-bibtex="@misc&#123;leins_when_2026,&#10;	title = &#123;When &#123;Does&#125; &#123;LLM&#125; &#123;Orchestration&#125; &#123;Pay&#125; &#123;Off&#125;? &#123;A&#125; &#123;Controlled&#125; &#123;Evaluation&#125; of &#123;Accuracy&#125;, &#123;Cost&#125;, and &#123;Task&#125; &#123;Difficulty&#125;&#125;,&#10;	author = &#123;Leins, Nicolas and Pelleriti, Nico and Gonnermann-Müller, Jana and Pokutta, Sebastian&#125;,&#10;	publisher = &#123;arXiv&#125;,&#10;	year = &#123;2026&#125;,&#10;	month = &#123;aug&#125;,&#10;	doi = &#123;10.48550/arXiv.2608.00685&#125;,&#10;	url = &#123;http://arxiv.org/abs/2608.00685&#125;,&#10;	note = &#123;arXiv:2608.00685 [cs.AI]&#125;,&#10;	shorttitle = &#123;When &#123;Does&#125; &#123;LLM&#125; &#123;Orchestration&#125; &#123;Pay&#125; &#123;Off&#125;?&#125;,&#10;&#125;">Cite</a> | <a href="http://arxiv.org/abs/2608.00685">Preprint</a></div>
+    </div>
+  </div>
+  </div>
+  <div class="card publication-card">
+  <div class="publication-grid">
+    <div class="publication-image">
       <img src="/assets/images/stability_education.webp" alt="Publication">
     </div>
     <div class="publication-content">

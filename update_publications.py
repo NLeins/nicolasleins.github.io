@@ -19,7 +19,8 @@ IMAGE_MAPPINGS = {
     'leins_investigating_2026': 'SA-in-robotics.webp',
     'gonnermann-muller_stable_2026': 'adhd.webp',
     'leins_beyond_2026': 'Multi-Agent-Framework.webp',
-    'gonnermann-muller_llm-based_2026': 'stability_education.webp'
+    'gonnermann-muller_llm-based_2026': 'stability_education.webp',
+    'leins_when_2026': 'AAAI_orchestration.webp'
 }
 
 MONTH_MAP = {
