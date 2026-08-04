@@ -21,7 +21,7 @@ description: Learn about Nicolas Leins' academic background, research at ZIB, an
     <div class="card">
       {% for edu in site.data.person.education %}
       <h3 style="font-size: 1.1em; margin-bottom: 5px;">{{ edu.degree }}</h3>
-      <div style="color: #446b59; font-weight: 600;">{{ edu.institution }}</div>
+      <div style="color: #4a90e2; font-weight: 600;">{{ edu.institution }}</div>
       <div style="color: #6b7280; font-size: 0.9em; margin-bottom: 10px;">{{ edu.status }}</div>
       {% if edu.degree contains "Ph.D." %}
       <div style="color: #4b5563; font-size: 0.95em; margin-bottom: 10px;">
@@ -52,7 +52,7 @@ description: Learn about Nicolas Leins' academic background, research at ZIB, an
       {% for pos in site.data.person.positions %}
       <div style="margin-bottom: 20px;">
         <h3 style="font-size: 1.1em; margin-bottom: 5px;">{{ pos.title }}</h3>
-        <div style="color: #446b59; font-weight: 600;">{{ pos.institution }}</div>
+        <div style="color: #4a90e2; font-weight: 600;">{{ pos.institution }}</div>
         <div style="color: #6b7280; font-size: 0.9em; margin-bottom: 5px;">
           {% if pos.current %}Since {{ pos.start_date }}{% else %}{{ pos.start_date }} – {{ pos.end_date }}{% endif %}
         </div>

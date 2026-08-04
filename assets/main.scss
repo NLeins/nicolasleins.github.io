@@ -6,9 +6,11 @@
 
 /* 2. Variables & Design System */
 $content-width: 1200px;
-$brand-color:   #446b59; /* New Brand Green */
-$text-color:    #1f2937; /* Dark Gray */
-$bg-color:      #f3f4f6; /* Light Gray Background */
+$brand-color:   #4a90e2; /* Primary blue */
+$accent-color:  #7bb3e0; /* Secondary blue */
+$header-color:  #1a365d; /* Deep navy */
+$text-color:    #1f2e43; /* Blue-black */
+$bg-color:      #ffffff; /* White page background */
 $card-bg:       #ffffff;
 
 /* Override Minima Defaults */
@@ -270,14 +272,14 @@ h3 {
 
 /* Header Adjustments */
 .site-header {
-  background-color: #7ca691; /* Even Lighter Green for Header */
+  background-color: $header-color;
   border-bottom: none;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .site-title {
   font-weight: 700;
-  color: #ffffff !important; /* White text on green */
+  color: #ffffff !important; /* White text on blue */
 }
 
 /* Navigation Links */
@@ -290,7 +292,7 @@ h3 {
 
 .site-nav .page-link:hover {
   color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(123, 179, 224, 0.35);
   border-radius: 4px;
 }
 
@@ -427,7 +429,7 @@ h3 {
 
   .site-nav .page-link:hover {
     color: $text-color;
-    background-color: rgba(68, 107, 89, 0.12);
+    background-color: rgba(123, 179, 224, 0.35);
   }
 }
 

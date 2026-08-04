@@ -20,7 +20,7 @@ description: Portfolio and research of Nicolas Leins, Ph.D. student at Zuse Inst
     <br>
     <div class="hero-actions">
       <a href="{{ '/bio/' | relative_url }}" class="btn">About Me &rarr;</a>
-      <a href="{{ '/publications/' | relative_url }}" class="btn" style="background-color: white; color: #446b59 !important; border: 1px solid #446b59;">View Publications &rarr;</a>
+      <a href="{{ '/publications/' | relative_url }}" class="btn" style="background-color: white; color: #4a90e2 !important; border: 1px solid #4a90e2;">View Publications &rarr;</a>
     </div>
   </div>
   <div class="hero-media">
