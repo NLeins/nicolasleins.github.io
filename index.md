@@ -30,19 +30,8 @@ description: Portfolio and research of Nicolas Leins, Ph.D. student at Zuse Inst
 
 <h2 style="margin-top: 40px; margin-bottom: 20px;">Latest Updates</h2>
 
-<div class="card-grid">
-  {% for post in site.posts limit:3 %}
-  <div class="card">
-    <span style="color: #6b7280; font-size: 0.85em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">{{ post.date | date: "%B %d, %Y" }}</span>
-    <h3 style="margin-top: 10px; margin-bottom: 10px;">
-      <a href="{{ post.url | relative_url }}" style="text-decoration: none; color: #111827;">{{ post.title }}</a>
-    </h3>
-    <p style="color: #4b5563;">{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
-    <a href="{{ post.url | relative_url }}" style="font-weight: 600; font-size: 0.9em;">Read more &rarr;</a>
-  </div>
-  {% endfor %}
-</div>
+{% include featured_publication.html %}
 
 <div style="margin-top: 20px; text-align: center;">
-  <a href="{{ '/blog/' | relative_url }}" style="font-weight: 600;">View all posts &rarr;</a>
+  <a href="{{ '/publications/' | relative_url }}" style="font-weight: 600;">View all publications &rarr;</a>
 </div>
