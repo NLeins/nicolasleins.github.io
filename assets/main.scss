@@ -1,37 +1,57 @@
 ---
 ---
 
-/* 1. Typography & Imports */
-/* Using system fonts for performance and privacy */
-
-/* 2. Variables & Design System */
+/* Shared foundation: retain Minima, the navy/blue palette, and system fonts. */
 $content-width: 1200px;
-$brand-color:   #4a90e2; /* Primary blue */
-$accent-color:  #7bb3e0; /* Secondary blue */
-$header-color:  #1a365d; /* Deep navy */
-$text-color:    #1f2e43; /* Blue-black */
-$bg-color:      #ffffff; /* White page background */
-$card-bg:       #ffffff;
+$brand-color: #4a90e2;
+$accent-color: #7bb3e0;
+$header-color: #1a365d;
+$text-color: #1f2e43;
+$bg-color: #ffffff;
+$card-bg: #ffffff;
 
-/* Override Minima Defaults */
+/* A deeper shade of the existing blue keeps text and white-label buttons legible. */
+$link-color: #2563a6;
+$text-muted: #4b5563;
+$text-subtle: #6b7280;
+$border-color: #e2e8f0;
+$surface-color: #f8fafc;
+
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 24px;
+$space-6: 32px;
+$space-7: 40px;
+$radius-small: 6px;
+$radius-medium: 8px;
+$radius-large: 12px;
+$transition-fast: 0.18s ease;
+$shadow-card: 0 2px 8px rgba($header-color, 0.05);
+
+/* Override Minima defaults before importing the theme. */
 $base-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 $background-color: $bg-color;
-$text-color:       $text-color;
-$brand-color:      $brand-color;
 
-/* Import Theme */
 @import "minima";
 
-/* 3. Global Resets & Styles */
+/* Typography and shared interaction states */
 body {
   background-color: $bg-color;
   color: $text-color;
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 h1, h2, h3, h4, h5, h6 {
+  color: $text-color;
+  font-weight: 600;
   line-height: 1.3;
+}
+
+h1, h2 {
+  letter-spacing: -0.015em;
 }
 
 h1 {
@@ -46,25 +66,37 @@ h3 {
   font-size: 1.2rem;
 }
 
-/* 4. Components */
+a {
+  color: $link-color;
+  text-underline-offset: 0.18em;
+}
 
-/* Cards / Panels */
+a:visited {
+  color: darken($link-color, 8%);
+}
+
+a:hover {
+  color: darken($link-color, 12%);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 3px solid $link-color;
+  outline-offset: 3px;
+}
+
+/* Static panels do not lift on hover: only their links are interactive. */
 .card {
   background-color: $card-bg;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  padding: 24px;
-  margin-bottom: 24px;
-  border: 1px solid rgba(0,0,0,0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
+  border: 1px solid $border-color;
+  border-radius: $radius-large;
+  box-shadow: $shadow-card;
+  padding: $space-5;
+  margin-bottom: $space-5;
 }
 
-.card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-/* Layout Utilities */
 .card-flat {
   background: transparent;
   border: none;
@@ -72,164 +104,206 @@ h3 {
   padding: 0;
 }
 
-.card-flat:hover {
-  transform: none;
-  box-shadow: none;
-}
-
+/* Homepage hero: preserve the existing arrangement, with a quiet portrait detail. */
 .hero {
   display: flex;
   align-items: center;
-  gap: 40px;
+  gap: $space-7;
+  padding-block: $space-4 $space-5;
+  margin-bottom: $space-7;
+}
+
+.hero-text {
+  min-width: 0;
+}
+
+.hero-eyebrow {
+  margin-bottom: $space-3;
+  color: $link-color;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .hero-title {
   margin-top: 0;
+  margin-bottom: $space-4;
+  font-size: clamp(2rem, calc(1.6rem + 1.2vw), 2.65rem);
   font-weight: 800;
-  color: #111827;
+  color: $text-color;
 }
 
 .hero-lead {
   font-size: 1.1em;
   line-height: 1.6;
-  color: #4b5563;
+  color: $text-muted;
 }
 
 .hero-subtext {
-  color: #4b5563;
+  max-width: 68ch;
+  color: $text-muted;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: $space-3;
+  margin-top: $space-5;
 }
 
 .hero-media {
   flex: 0 0 250px;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Decorative only: no added markup, animation, or pointer interaction. */
+.hero-media::before,
+.hero-media::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-media::before {
+  z-index: -2;
+  inset: -28px;
+  background: radial-gradient(circle, rgba($accent-color, 0.24) 0%, rgba($accent-color, 0.08) 55%, rgba($accent-color, 0) 72%);
+}
+
+.hero-media::after {
+  z-index: -1;
+  inset: -10px;
+  border: 1px solid rgba($brand-color, 0.35);
 }
 
 .hero-media img {
+  display: block;
+  box-sizing: border-box;
   border-radius: 50%;
   width: 250px;
   height: 250px;
   object-fit: cover;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  border: 4px solid white;
+  box-shadow: 0 10px 25px rgba($header-color, 0.1);
+  border: 4px solid $card-bg;
 }
 
+/* Only the homepage feature receives this treatment; generated markup stays intact. */
+.home-updates > h2 {
+  margin-top: 0;
+  margin-bottom: $space-5;
+}
+
+.home-updates .publication-card {
+  border-color: mix($accent-color, $card-bg, 40%);
+  border-left: 3px solid $brand-color;
+  background-color: mix($accent-color, $card-bg, 6%);
+}
+
+.home-updates .featured-publication-label {
+  color: $link-color;
+}
+
+.home-updates-more {
+  margin-top: $space-5;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Existing layout utilities */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  gap: $space-5;
 }
 
 .bio-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: $space-5;
 }
 
-/* Publications */
+/* Biography records: date labels and separators, without a timeline rail. */
+.bio-grid .bio-records {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.bio-grid .bio-record {
+  margin: 0;
+  min-width: 0;
+}
+
+.bio-grid .bio-record + .bio-record {
+  margin-top: $space-5;
+  padding-top: $space-5;
+  border-top: 1px solid $border-color;
+}
+
+.bio-grid .bio-record-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-2;
+}
+
+.bio-grid .bio-record-date {
+  color: $text-subtle;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.bio-grid .bio-record-current {
+  display: inline-block;
+  padding: 1px $space-2;
+  border: 1px solid $border-color;
+  border-radius: $radius-small;
+  color: $link-color;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.bio-grid .bio-record-title {
+  margin-top: 0;
+  margin-bottom: $space-1;
+  font-size: 1.1rem;
+  overflow-wrap: anywhere;
+}
+
+.bio-grid .bio-record-institution {
+  color: $link-color;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.bio-grid .bio-record-description {
+  margin-top: $space-2;
+  margin-bottom: 0;
+  color: $text-muted;
+  font-size: 0.95rem;
+}
+
+/* Publication styles: consolidate duplicate rules, preserving the current layout. */
 .publication-card {
-  margin-bottom: 24px;
+  margin-bottom: $space-5;
 }
 
 .publication-grid {
   display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 24px;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: $space-5;
   align-items: center;
-}
-
-.publication-image {
-  width: 180px;
-  height: 180px;
-  overflow: hidden;
-  flex-shrink: 0;
-  will-change: transform;
-  transform: translateZ(0);
-  contain: layout style paint;
-}
-
-.publication-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-}
-
-.featured-publication-label {
-  display: block;
-  color: #6b7280;
-  font-size: 0.8em;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-}
-
-.publication-title {
-  margin-top: 0;
-  font-size: 1.2em;
-  margin-bottom: 12px;
-}
-
-.publication-authors {
-  color: #4b5563;
-  margin-bottom: 12px;
-  font-size: 1em;
-}
-
-.publication-venue {
-  color: #6b7280;
-  font-size: 0.95em;
-  margin-bottom: 14px;
-}
-
-.publication-links {
-  font-size: 0.95em;
-}
-
-/* Buttons */
-.btn {
-  display: inline-block;
-  background-color: $brand-color;
-  color: white !important; /* Force override of link colors */
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: background-color 0.2s;
-}
-
-.btn:hover {
-  background-color: darken($brand-color, 10%);
-  text-decoration: none;
-}
-
-/* Publication List Updates */
-.publication-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.publication-item {
-  /* Inherit card styles */
-  @extend .card; 
-  
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-  padding: 24px;
-  border-bottom: none; /* Remove old border */
 }
 
 .publication-image {
   flex: 0 0 150px;
   width: 150px;
   height: 150px;
+  overflow: hidden;
 }
 
 .publication-image img {
@@ -238,168 +312,520 @@ h3 {
   object-fit: contain;
   object-position: center;
   border: none;
-  box-shadow: none; /* Card has shadow, image doesn't need one */
+  box-shadow: none;
+}
+
+.featured-publication-label {
+  display: block;
+  color: $text-subtle;
+  font-size: 0.8em;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-bottom: $space-2;
+  text-transform: uppercase;
+}
+
+.publication-title {
+  display: block;
+  margin-top: 0;
+  margin-bottom: $space-2;
+  font-weight: 700;
+  font-size: 1.25em;
+  color: $text-color;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.publication-authors {
+  color: $text-muted;
+  margin-bottom: $space-3;
+  font-size: 1em;
+}
+
+.publication-venue {
+  color: $text-subtle;
+  font-size: 0.95em;
+  margin-bottom: $space-4;
 }
 
 .publication-content {
   flex: 1;
-}
-
-.publication-title {
-  font-weight: 700; /* Bold title */
-  font-size: 1.25em;
-  margin-bottom: 8px;
-  display: block;
-  color: #111827;
-  line-height: 1.3;
+  min-width: 0;
 }
 
 .publication-meta {
-  color: #4b5563;
+  color: $text-muted;
   font-size: 0.95em;
-  margin-bottom: 12px;
+  margin-bottom: $space-3;
+}
+
+.publication-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+}
+
+.publication-item {
+  @extend .card;
+  display: flex;
+  gap: $space-5;
+  align-items: flex-start;
+}
+
+/* Primary and secondary buttons share sizing and states. */
+.btn,
+.btn:visited {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 1px solid $link-color;
+  border-radius: $radius-medium;
+  background-color: $link-color;
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color $transition-fast, border-color $transition-fast, color $transition-fast;
+}
+
+.btn:hover {
+  background-color: darken($link-color, 8%);
+  border-color: darken($link-color, 8%);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.btn-secondary,
+.btn-secondary:visited {
+  background-color: $card-bg;
+  color: $link-color;
+}
+
+.btn-secondary:hover {
+  background-color: $surface-color;
+  border-color: darken($link-color, 8%);
+  color: darken($link-color, 8%);
+}
+
+.publication-links {
+  font-size: 0.95em;
 }
 
 .publication-links a {
   display: inline-block;
-  margin-right: 10px;
+  margin-right: $space-2;
   font-size: 0.85em;
   text-decoration: none;
-  border: 1px solid #e5e7eb;
-  padding: 4px 12px;
-  border-radius: 6px;
-  color: $brand-color;
-  background-color: #f9fafb;
+  border: 1px solid $border-color;
+  padding: $space-1 $space-3;
+  border-radius: $radius-small;
+  color: $link-color;
+  background-color: $surface-color;
   font-weight: 600;
-  transition: all 0.2s;
+  transition: background-color $transition-fast, border-color $transition-fast, color $transition-fast;
 }
 
 .publication-links a:hover {
-  background-color: $brand-color;
-  color: white;
-  border-color: $brand-color;
+  background-color: $link-color;
+  color: #ffffff;
+  border-color: $link-color;
 }
 
-/* Header Adjustments */
+/* Compact publication list; deliberately scoped away from the homepage feature. */
+.publications-title {
+  margin-bottom: $space-4;
+}
+
+.publications-intro {
+  margin-bottom: $space-6;
+  color: $text-muted;
+}
+
+.publication-year {
+  margin-bottom: $space-6;
+}
+
+.publications-page .publication-year-title {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  margin-top: 0;
+  margin-bottom: $space-4;
+  font-size: 1.3rem;
+}
+
+.publication-year-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: $border-color;
+}
+
+.publications-page .card.publication-card {
+  padding: $space-4;
+  margin-bottom: $space-4;
+}
+
+.publications-page .publication-grid {
+  grid-template-columns: 128px minmax(0, 1fr);
+  gap: $space-4;
+}
+
+.publications-page .publication-image {
+  box-sizing: border-box;
+  width: 128px;
+  height: 128px;
+  padding: $space-2;
+  margin: 0;
+  background-color: $surface-color;
+  border: 1px solid $border-color;
+  border-radius: $radius-medium;
+}
+
+.publications-page .publication-image img {
+  display: block;
+}
+
+.publication-type {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: $space-2;
+  padding: 1px $space-2;
+  border: 1px solid $border-color;
+  border-radius: $radius-small;
+  color: $link-color;
+  background-color: $surface-color;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.publications-page .publication-title {
+  font-size: 1.1rem;
+  line-height: 1.35;
+}
+
+.publications-page .publication-authors {
+  margin-bottom: $space-1;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.publications-page .publication-venue {
+  margin-bottom: $space-2;
+  font-size: 0.85rem;
+}
+
+.publications-page .publication-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2;
+}
+
+.publications-page .publication-links a,
+.publications-page .publication-links button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 36px;
+  margin: 0;
+  padding: $space-1 $space-3;
+  border: 1px solid $border-color;
+  border-radius: $radius-small;
+  background-color: $surface-color;
+  color: $link-color;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color $transition-fast, border-color $transition-fast, color $transition-fast;
+}
+
+.publications-page .publication-links a:hover,
+.publications-page .publication-links button:hover {
+  background-color: $link-color;
+  border-color: $link-color;
+  color: #ffffff;
+}
+
+.publications-page .publication-links button[aria-busy="true"] {
+  cursor: progress;
+}
+
+.publication-copy-status {
+  display: block;
+  color: $text-muted;
+  font-size: 0.8rem;
+}
+
+.publication-copy-status:not(:empty) {
+  margin-top: $space-2;
+}
+
+.publication-profiles {
+  margin-top: $space-6;
+  padding-top: $space-5;
+  border-top: 1px solid $border-color;
+}
+
+/* Blog: editorial previews and a comfortable article reading measure. */
+.blog-index {
+  max-width: 78ch;
+}
+
+.blog-index .blog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.blog-index .blog-list-item {
+  padding-bottom: $space-5;
+  border-bottom: 1px solid $border-color;
+}
+
+.blog-index .blog-list-item + .blog-list-item {
+  padding-top: $space-5;
+}
+
+.blog-index .blog-preview-meta {
+  margin-bottom: $space-2;
+  color: $text-subtle;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.blog-index .blog-preview-title {
+  margin-top: 0;
+  margin-bottom: $space-3;
+  font-size: 1.35rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.blog-index .blog-preview-excerpt {
+  margin-bottom: $space-3;
+  color: $text-muted;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+
+.blog-index .blog-read-more {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.blog-article {
+  max-width: 70ch;
+  margin-inline: auto;
+}
+
+.blog-article .post-header {
+  margin-bottom: $space-6;
+  padding-bottom: $space-5;
+  border-bottom: 1px solid $border-color;
+}
+
+.blog-article .post-title {
+  margin-bottom: $space-4;
+  font-size: clamp(1.8rem, calc(1.5rem + 1vw), 2.4rem);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.blog-article .post-meta {
+  margin-bottom: 0;
+  color: $text-subtle;
+}
+
+.blog-article .post-content {
+  line-height: 1.75;
+  overflow-wrap: break-word;
+}
+
+.blog-article .post-content p {
+  margin-bottom: $space-5;
+}
+
+.blog-article .post-content h2 {
+  margin-top: $space-6;
+  margin-bottom: $space-4;
+}
+
+.blog-article .post-content h3 {
+  margin-top: $space-5;
+  margin-bottom: $space-3;
+}
+
+.blog-article .post-content img {
+  display: block;
+  box-sizing: border-box;
+  max-width: 100%;
+  height: auto;
+  margin: $space-5 auto;
+  padding: $space-2;
+  border: 1px solid $border-color;
+  border-radius: $radius-medium;
+  background-color: $card-bg;
+}
+
+.blog-article .post-content figure {
+  margin: $space-5 0;
+}
+
+.blog-article .post-content figcaption {
+  color: $text-muted;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* Existing header and navigation */
 .site-header {
   background-color: $header-color;
   border-bottom: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba($header-color, 0.1);
 }
 
-.site-title {
+.site-title,
+.site-title:visited {
+  font-size: 24px;
   font-weight: 700;
-  color: #ffffff !important; /* White text on blue */
+  color: #ffffff;
 }
 
-/* Navigation Links */
 .site-nav .page-link {
   color: rgba(255, 255, 255, 0.95);
   font-weight: 600;
   font-size: 16px;
   padding: 10px 16px;
+  border-radius: $radius-small;
+  transition: background-color $transition-fast;
 }
 
 .site-nav .page-link:hover {
   color: #ffffff;
-  background-color: rgba(123, 179, 224, 0.35);
-  border-radius: 4px;
+  background-color: rgba($accent-color, 0.35);
 }
 
-.site-title {
-  font-size: 24px;
+.site-nav .page-link[aria-current] {
+  background-color: rgba($accent-color, 0.18);
+  box-shadow: inset 0 -2px 0 $accent-color;
 }
 
-/* Social Icons in Footer */
-.social-links {
+.site-header a:focus-visible {
+  outline-color: $accent-color;
+}
+
+/* Existing social links and footer */
+.social-links,
+.footer-social-links {
   display: flex;
-  gap: 16px;
+  gap: $space-4;
   align-items: center;
   justify-content: center;
+}
+
+.social-links {
   margin: 20px 0;
 }
 
-.social-links a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #e5e7eb;
-  transition: all 0.2s;
-  text-decoration: none;
-}
-
-.social-links a:hover {
-  background-color: $brand-color;
-}
-
-.social-links .svg-icon {
-  width: 24px;
-  height: 24px;
-  display: inline;
-}
-
-.social-links a:hover .svg-icon {
-  color: white;
-}
-
-/* Footer Social Links */
 .footer-social-links {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: center;
   margin: 0;
   padding: 0;
 }
 
+.social-links a,
 .footer-social-links a {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: #e5e7eb;
-  transition: all 0.2s;
+  background-color: $border-color;
+  color: $text-color;
+  transition: background-color $transition-fast, color $transition-fast;
   text-decoration: none;
   flex-shrink: 0;
 }
 
+.social-links a:hover,
 .footer-social-links a:hover {
-  background-color: $brand-color;
+  background-color: $link-color;
+  color: #ffffff;
 }
 
+.social-links .svg-icon,
 .footer-social-links .svg-icon {
   width: 24px;
   height: 24px;
   display: block;
-  color: $text-color;
+  color: inherit;
 }
 
-.footer-social-links a:hover .svg-icon {
-  color: white;
+/* Centered footer: one divider, compact spacing, and quieter icon surfaces. */
+.site-footer {
+  padding: $space-5 0;
+  border-top: 1px solid $border-color;
+  background-color: $bg-color;
 }
 
-.footer-bottom {
+.site-footer .footer-bottom {
   text-align: center;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 1px solid #e8e8e8;
+  margin: 0;
+  padding: 0;
+  border: none;
 }
 
-.legal-links {
-  margin-top: 15px;
-  font-size: 14px;
+.site-footer .footer-social-links {
+  flex-wrap: wrap;
+  gap: $space-3;
 }
 
-/* Responsive Adjustments */
+.site-footer .footer-social-links a {
+  box-sizing: border-box;
+  border: 1px solid $border-color;
+  background-color: $surface-color;
+  color: $text-muted;
+}
+
+.site-footer .footer-social-links a:hover {
+  border-color: $link-color;
+  background-color: $link-color;
+  color: #ffffff;
+}
+
+.site-footer .legal-links {
+  margin-top: $space-3;
+  color: $text-subtle;
+  font-size: 0.8rem;
+}
+
+.site-footer .legal-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding-inline: $space-1;
+  color: $text-muted;
+}
+
+.site-footer .legal-links a:hover {
+  color: $link-color;
+}
+
+/* Preserve the current responsive layout and readable mobile text size. */
 @media (max-width: 768px) {
   .hero {
     flex-direction: column-reverse;
-    gap: 24px;
+    gap: $space-5;
   }
 
   .hero-media {
@@ -411,26 +837,55 @@ h3 {
     height: 200px;
   }
 
-  .bio-grid {
-    grid-template-columns: 1fr;
-  }
-
+  .bio-grid,
   .publication-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .publication-image {
     width: 160px;
     height: 160px;
-    margin: 0 auto 8px;
+    margin: 0 auto $space-2;
   }
 }
 
 @media (max-width: 600px) {
+  .publications-page .publication-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .publications-page .publication-image {
+    width: 112px;
+    height: 112px;
+    margin: 0 auto $space-1;
+  }
+
+  .publications-page .publication-links a,
+  .publications-page .publication-links button {
+    min-height: 44px;
+  }
+
+  /* Keep Minima's checkbox menu, but make its toggle keyboard-reachable. */
+  .site-nav .nav-trigger {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .site-nav .nav-trigger:focus-visible + label {
+    outline: 3px solid $link-color;
+    outline-offset: 3px;
+    border-radius: $radius-small;
+  }
+
   .site-nav .trigger {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    background-color: $card-bg;
+    border-radius: $radius-medium;
+    box-shadow: $shadow-card;
   }
 
   .site-nav .page-link {
@@ -439,13 +894,22 @@ h3 {
 
   .site-nav .page-link:hover {
     color: $text-color;
-    background-color: rgba(123, 179, 224, 0.35);
+    background-color: rgba($accent-color, 0.35);
+  }
+
+  .site-nav .page-link[aria-current] {
+    background-color: rgba($accent-color, 0.14);
+    box-shadow: inset 0 -2px 0 $link-color;
+  }
+
+  .site-nav a:focus-visible {
+    outline-color: $link-color;
   }
 }
 
 @media (max-width: 480px) {
-  body {
-    font-size: 15px;
+  .card:not(.card-flat) {
+    padding: 20px;
   }
 
   .hero-media img {
@@ -456,5 +920,18 @@ h3 {
   .publication-image {
     width: 140px;
     height: 140px;
+  }
+}
+
+/* Keep feedback, but remove transitions when reduced motion is requested. */
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .publication-links a,
+  .publications-page .publication-links a,
+  .publications-page .publication-links button,
+  .site-nav .page-link,
+  .social-links a,
+  .footer-social-links a {
+    transition: none;
   }
 }

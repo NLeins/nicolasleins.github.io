@@ -37,7 +37,7 @@ education:
   - degree: Ph.D. in Computational Science
     institution: Zuse Institute Berlin (ZIB)
     status: Currently
-    start_year: 2023
+    start_year: 2025
     description: "Ph.D. supervisor: Prof. Dr. Sebastian Pokutta"
   - degree: M.Sc. in Business Informatics and Digital Transformation
     institution: University of Potsdam
@@ -54,13 +54,13 @@ education:
 positions:
   - title: Researcher & Ph.D. Student
     institution: Zuse Institute Berlin
-    start_date: "2023"
+    start_date: "2025"
     current: true
     description: "Focusing on Multi-Agent AI Systems and their application in real-world scenarios."
   - title: Research Assistant
     institution: University of Potsdam
-    start_date: "Nov 2022"
-    end_date: "Sep 2023"
+    start_date: "2022"
+    end_date: "2025"
     current: false
     description: "Education for the Digital World (Weizenbaum Institute)."
   - title: Student Assistant (VR)

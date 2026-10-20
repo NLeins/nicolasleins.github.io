@@ -26,4 +26,6 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - DESIGN-POLISH-PLAN.md
+  - tests
   - "Personal Publications.bib"

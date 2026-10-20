@@ -19,20 +19,27 @@ description: Learn about Nicolas Leins' academic background, research at ZIB, an
   <div>
     <h2 style="margin-top: 0;">Education</h2>
     <div class="card">
-      {% for edu in site.data.person.education %}
-      <h3 style="font-size: 1.1em; margin-bottom: 5px;">{{ edu.degree }}</h3>
-      <div style="color: #4a90e2; font-weight: 600;">{{ edu.institution }}</div>
-      <div style="color: #6b7280; font-size: 0.9em; margin-bottom: 10px;">{{ edu.status }}</div>
-      {% if edu.degree contains "Ph.D." %}
-      <div style="color: #4b5563; font-size: 0.95em; margin-bottom: 10px;">
-        Ph.D. supervisor: <a href="{{ site.data.person.phd_supervisor.url }}">{{ site.data.person.phd_supervisor.name }}</a><br>
-        Co-supervisor: <a href="{{ site.data.person.co_supervisor.url }}">{{ site.data.person.co_supervisor.name }}</a>
-      </div>
-      {% endif %}
-      {% if forloop.last == false %}
-      <hr style="border-top: 1px solid #f3f4f6; margin: 15px 0;">
-      {% endif %}
-      {% endfor %}
+      <ol class="bio-records" role="list">
+        {% for edu in site.data.person.education %}
+        {% assign education_status = edu.status | downcase %}
+        <li class="bio-record">
+          <div class="bio-record-meta">
+            <span class="bio-record-date">{% if education_status == 'currently' and edu.start_year %}Since {{ edu.start_year | escape }}{% else %}{{ edu.status | escape }}{% endif %}</span>
+            {% if education_status == 'currently' %}
+            <span class="bio-record-current">Current</span>
+            {% endif %}
+          </div>
+          <h3 class="bio-record-title">{{ edu.degree | escape }}</h3>
+          <div class="bio-record-institution">{{ edu.institution | escape }}</div>
+          {% if edu.degree contains "Ph.D." %}
+          <p class="bio-record-description">
+            Ph.D. supervisor: <a href="{{ site.data.person.phd_supervisor.url | escape }}">{{ site.data.person.phd_supervisor.name | escape }}</a><br>
+            Co-supervisor: <a href="{{ site.data.person.co_supervisor.url | escape }}">{{ site.data.person.co_supervisor.name | escape }}</a>
+          </p>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ol>
     </div>
 
     <h2 style="margin-top: 20px;">Research Interests</h2>
@@ -49,21 +56,23 @@ description: Learn about Nicolas Leins' academic background, research at ZIB, an
   <div>
     <h2 style="margin-top: 0;">Professional Experience</h2>
     <div class="card">
-      {% for pos in site.data.person.positions %}
-      <div style="margin-bottom: 20px;">
-        <h3 style="font-size: 1.1em; margin-bottom: 5px;">{{ pos.title }}</h3>
-        <div style="color: #4a90e2; font-weight: 600;">{{ pos.institution }}</div>
-        <div style="color: #6b7280; font-size: 0.9em; margin-bottom: 5px;">
-          {% if pos.current %}Since {{ pos.start_date }}{% else %}{{ pos.start_date }} – {{ pos.end_date }}{% endif %}
-        </div>
-        {% if pos.description %}
-        <p style="font-size: 0.95em; color: #4b5563; margin-bottom: 0;">{{ pos.description }}</p>
-        {% endif %}
-      </div>
-      {% if forloop.last == false %}
-      <hr style="border-top: 1px solid #f3f4f6; margin: 15px 0;">
-      {% endif %}
-      {% endfor %}
+      <ol class="bio-records" role="list">
+        {% for pos in site.data.person.positions %}
+        <li class="bio-record">
+          <div class="bio-record-meta">
+            <span class="bio-record-date">{% if pos.current %}Since {{ pos.start_date | escape }}{% else %}{{ pos.start_date | escape }} – {{ pos.end_date | escape }}{% endif %}</span>
+            {% if pos.current %}
+            <span class="bio-record-current">Current</span>
+            {% endif %}
+          </div>
+          <h3 class="bio-record-title">{{ pos.title | escape }}</h3>
+          <div class="bio-record-institution">{{ pos.institution | escape }}</div>
+          {% if pos.description %}
+          <p class="bio-record-description">{{ pos.description | escape }}</p>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ol>
     </div>
 
     <h2 style="margin-top: 20px;">Contact</h2>

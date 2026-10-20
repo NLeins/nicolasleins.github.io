@@ -8,6 +8,7 @@ import re
 import html
 from collections import defaultdict
 from pathlib import Path
+from urllib.parse import urlsplit
 
 # Publication shown on the home page. Change this cite key to feature another entry.
 FEATURED_PUBLICATION_KEY = 'leins_when_2026'
@@ -295,10 +296,39 @@ def bibtex_from_entry(entry: dict) -> str:
     return "\n".join(lines)
 
 
+def publication_type_label(entry):
+    """Return a conservative paper-type label from explicit publication metadata."""
+    entry_type = entry.get("type", "").lower()
+    journal = entry.get("journal", "")
+    venue = clean_braces(entry.get("booktitle") or journal).lower()
+    if entry_type in {"inproceedings", "conference"} or re.search(
+        r"\b(proceedings|conference)\b", venue
+    ):
+        return "Conference paper"
+    if entry_type == "article" and journal and "arxiv" not in venue:
+        return "Journal article"
+    archive_fields = ("publisher", "journal", "archiveprefix", "eprinttype")
+    arxiv_metadata = any(
+        clean_braces(str(entry.get(field, ""))).strip().lower() == "arxiv"
+        for field in archive_fields
+    )
+    try:
+        host = urlsplit(entry.get("url", "")).hostname or ""
+    except ValueError:
+        host = ""
+    doi = entry.get("doi", "").lower()
+    if (arxiv_metadata or host == "arxiv.org" or host.endswith(".arxiv.org")
+            or doi.startswith("10.48550/arxiv.")):
+        return "Preprint"
+    return ""
+
+
 def format_entry(entry):
     """Format a single BibTeX entry as HTML card."""
     cite_key = entry.get('cite_key', '')
     image_file = IMAGE_MAPPINGS.get(cite_key)
+    title = clean_braces(entry.get('title', 'Untitled'))
+    escaped_title = html.escape(title, quote=True)
 
     html_parts = []
 
@@ -309,19 +339,20 @@ def format_entry(entry):
     if image_file:
         html_parts.append('<div class="publication-grid">')
         html_parts.append('  <div class="publication-image">')
-        html_parts.append(f'    <img src="/assets/images/{image_file}" alt="Publication">')
+        html_parts.append(
+            f'    <img src="/assets/images/{image_file}" '
+            f'alt="Figure for {escaped_title}" loading="lazy" width="128" height="128">'
+        )
         html_parts.append('  </div>')
-        html_parts.append('  <div class="publication-content">')
+    html_parts.append('  <div class="publication-content">')
 
-    # Title
-    title = entry.get('title', 'Untitled')
-    title = clean_braces(title)
-    html_parts.append(f"    <h3 class=\"publication-title\">{title}</h3>")
+    paper_type = publication_type_label(entry)
+    html_parts.append(f'    <h3 class="publication-title">{escaped_title}</h3>')
 
     # Authors
     if 'author' in entry:
         authors = format_authors(entry['author'])
-        html_parts.append(f"    <div class=\"publication-authors\">{authors}</div>")
+        html_parts.append(f"    <div class=\"publication-authors\">{html.escape(authors)}</div>")
 
     # Venue and year
     venue_parts = []
@@ -347,8 +378,11 @@ def format_entry(entry):
     if date_parts:
         venue_parts.append(' '.join(date_parts))
 
-    if venue_parts:
-        html_parts.append(f"    <div class=\"publication-venue\">{', '.join(venue_parts)}</div>")
+    metadata = html.escape(', '.join(venue_parts))
+    if paper_type:
+        metadata = f'<span class="publication-type">{paper_type}</span> {metadata}'
+    if metadata:
+        html_parts.append(f'    <div class="publication-venue">{metadata}</div>')
 
     # Links: "Cite" (copies BibTeX) + "Preprint"/"DOI"
     bibtex = bibtex_from_entry(entry)
@@ -361,24 +395,30 @@ def format_entry(entry):
         .replace("{", "&#123;")
         .replace("}", "&#125;")
     )
-    links = [f"<a class=\"publication-cite\" href=\"#\" data-bibtex=\"{bibtex_attr}\">Cite</a>"]
+    links = [
+        f'<button type="button" class="publication-cite" data-bibtex="{bibtex_attr}" '
+        f'aria-label="Copy BibTeX citation for {escaped_title}">Cite</button>'
+    ]
 
     url = entry.get("url", "")
     doi = entry.get("doi", "")
     is_arxiv = isinstance(url, str) and ("arxiv.org" in url.lower())
 
     if is_arxiv and url:
-        links.append(f"<a href=\"{url}\">Preprint</a>")
+        links.append(f'<a href="{html.escape(url, quote=True)}">Preprint</a>')
     elif doi:
-        links.append(f"<a href=\"https://doi.org/{doi}\">DOI</a>")
+        links.append(f'<a href="https://doi.org/{html.escape(doi, quote=True)}">DOI</a>')
     elif url:
-        links.append(f"<a href=\"{url}\">Link</a>")
+        links.append(f'<a href="{html.escape(url, quote=True)}">Link</a>')
 
-    html_parts.append(f"    <div class=\"publication-links\">{' | '.join(links)}</div>")
+    html_parts.append(f'    <div class="publication-links">{" ".join(links)}</div>')
+    html_parts.append(
+        '    <span class="publication-copy-status" role="status" '
+        'aria-live="polite" aria-atomic="true"></span>'
+    )
 
-    # Close grid if image was present
+    html_parts.append('  </div>')
     if image_file:
-        html_parts.append('  </div>')
         html_parts.append('</div>')
 
     html_parts.append('</div>')
@@ -475,56 +515,24 @@ def generate_publications_md(entries, scholar_id=None):
         "permalink: /publications/",
         "---",
         "<style>.post-header { display: none; }</style>",
-        "<script>",
-        "(function () {",
-        "  function copyText(text) {",
-        "    if (navigator.clipboard && navigator.clipboard.writeText) {",
-        "      return navigator.clipboard.writeText(text);",
-        "    }",
-        "    return new Promise(function (resolve, reject) {",
-        "      try {",
-        "        var ta = document.createElement('textarea');",
-        "        ta.value = text;",
-        "        ta.setAttribute('readonly', '');",
-        "        ta.style.position = 'fixed';",
-        "        ta.style.top = '-1000px';",
-        "        document.body.appendChild(ta);",
-        "        ta.select();",
-        "        var ok = document.execCommand('copy');",
-        "        document.body.removeChild(ta);",
-        "        ok ? resolve() : reject(new Error('copy failed'));",
-        "      } catch (e) {",
-        "        reject(e);",
-        "      }",
-        "    });",
-        "  }",
-        "",
-        "  document.addEventListener('click', function (e) {",
-        "    var a = e.target && e.target.closest ? e.target.closest('a.publication-cite') : null;",
-        "    if (!a) return;",
-        "    e.preventDefault();",
-        "    var bibtex = a.getAttribute('data-bibtex') || '';",
-        "    copyText(bibtex).then(function () {",
-        "      var old = a.textContent;",
-        "      a.textContent = 'Copied';",
-        "      window.setTimeout(function () { a.textContent = old; }, 1200);",
-        "    });",
-        "  });",
-        "})();",
-        "</script>",
-        "",
-        "<h1 style=\"font-size: 2.5em; margin-bottom: 20px;\">Publications</h1>",
+        '<script src="{{ "/assets/publications.js" | relative_url }}" defer></script>',
+        '<div class="publications-page">',
+        '<h1 class="publications-title">Publications</h1>',
     ]
 
     if scholar_id:
-        md_lines.append(f'<p style="font-size: 1.1em; margin-bottom: 30px;">For a complete list, see my <a href="https://scholar.google.com/citations?user={scholar_id}">Google Scholar profile</a>.</p>')
+        md_lines.append(
+            '<p class="publications-intro">For a complete list, see my '
+            '<a href="https://scholar.google.com/citations?user='
+            f'{html.escape(scholar_id, quote=True)}">Google Scholar profile</a>.</p>'
+        )
 
     md_lines.append("")
 
     # Add entries by year
     for year in sorted_years:
-        md_lines.append(f'<div style="margin-bottom: 40px;">')
-        md_lines.append(f"  <h2 style=\"margin-bottom: 28px; font-size: 1.8em;\">{year}</h2>")
+        md_lines.append('<section class="publication-year">')
+        md_lines.append(f'  <h2 class="publication-year-title">{html.escape(str(year))}</h2>')
 
         by_year[year].sort(
             key=lambda e: (
@@ -538,19 +546,23 @@ def generate_publications_md(entries, scholar_id=None):
         for entry in by_year[year]:
             md_lines.append("  " + format_entry(entry).replace('\n', '\n  '))
 
-        md_lines.append('</div>')
+        md_lines.append('</section>')
         md_lines.append("")
 
-    md_lines.append('<hr style="border-top: 1px solid #f3f4f6; margin: 40px 0;">')
-    md_lines.append("")
-    md_lines.append("<h2 style=\"font-size: 1.8em; margin-bottom: 20px;\">Citation Profiles</h2>")
-    md_lines.append("<ul style=\"font-size: 1.1em; line-height: 1.8;\">")
+    md_lines.append('<section class="publication-profiles">')
+    md_lines.append('<h2>Citation Profiles</h2>')
+    md_lines.append('<ul>')
     if scholar_id:
-        md_lines.append(f'<li><a href="https://scholar.google.com/citations?user={scholar_id}">Google Scholar</a></li>')
+        md_lines.append(
+            '<li><a href="https://scholar.google.com/citations?user='
+            f'{html.escape(scholar_id, quote=True)}">Google Scholar</a></li>'
+        )
     else:
         md_lines.append('<li><a href="https://scholar.google.com/citations?user=YOUR_ID">Google Scholar</a></li>')
     md_lines.append('<li><a href="https://www.researchgate.net/profile/Nicolas-Leins?ev=hdr_xprf">ResearchGate</a></li>')
     md_lines.append("</ul>")
+    md_lines.append("</section>")
+    md_lines.append("</div>")
     md_lines.append("")
 
     return '\n'.join(md_lines)
