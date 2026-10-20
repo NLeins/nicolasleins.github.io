@@ -35,37 +35,6 @@
 	file = {Snapshot:/Users/nleins/Zotero/storage/KTFGFRDF/UR5e-Augmented-Reality-Quest3-Interface.html:text/html},
 }
 
-@misc{haase_within-model_2026,
-	title = {Within-{Model} vs {Between}-{Prompt} {Variability} in {Large} {Language} {Models} for {Creative} {Tasks}},
-	url = {http://arxiv.org/abs/2601.21339},
-	doi = {10.48550/arXiv.2601.21339},
-	abstract = {How much of LLM output variance is explained by prompts versus model choice versus stochasticity through sampling? We answer this by evaluating 12 LLMs on 10 creativity prompts with 100 samples each (N = 12,000). For output quality (originality), prompts explain 36.43\% of variance, comparable to model choice (40.94\%). But for output quantity (fluency), model choice (51.25\%) and within-LLM variance (33.70\%) dominate, with prompts explaining only 4.22\%. Prompts are powerful levers for steering output quality, but given the substantial within-LLM variance (10-34\%), single-sample evaluations risk conflating sampling noise with genuine prompt or model effects.},
-	urldate = {2026-02-02},
-	publisher = {arXiv},
-	author = {Haase, Jennifer and Gonnermann-Müller, Jana and Hanel, Paul H. P. and Leins, Nicolas and Kosch, Thomas and Mendling, Jan and Pokutta, Sebastian},
-	month = jan,
-	year = {2026},
-	note = {arXiv:2601.21339 [cs]},
-	keywords = {Computer Science - Artificial Intelligence},
-	file = {Preprint PDF:/Users/nleins/Zotero/storage/759M8QN8/Haase et al. - 2026 - Within-Model vs Between-Prompt Variability in Large Language Models for Creative Tasks.pdf:application/pdf;Snapshot:/Users/nleins/Zotero/storage/VAJSYCG2/2601.html:text/html},
-}
-
-@misc{gonnermann-muller_facet_2026,
-	title = {{FACET}: {Multi}-{Agent} {AI} {Supporting} {Teachers} in {Scaling} {Differentiated} {Learning} for {Diverse} {Students}},
-	shorttitle = {{FACET}},
-	url = {http://arxiv.org/abs/2601.22788},
-	doi = {10.48550/arXiv.2601.22788},
-	abstract = {Classrooms are becoming increasingly heterogeneous, comprising learners with diverse performance and motivation levels, language proficiencies, and learning differences such as dyslexia and ADHD. While teachers recognize the need for differentiated instruction, growing workloads create substantial barriers, making differentiated instruction an ideal that is often unrealized in practice. Current AI educational tools, which promise differentiated materials, are predominantly student-facing and performance-centric, ignoring other aspects that shape learning outcomes. We introduce FACET, a teacher-facing multi-agent framework designed to address these gaps by supporting differentiation that accounts for motivation, performance, and learning differences. Developed with educational stakeholders from the outset, the framework coordinates four specialized agents, including learner simulation, diagnostic assessment, material generation, and evaluation within a teacher-in-the-loop design. School principals (N = 30) shaped system requirements through participatory workshops, while in-service K-12 teachers (N = 70) evaluated material quality. Mixed-methods evaluation demonstrates strong perceived value for inclusive differentiation. Practitioners emphasized both the urgent need arising from classroom heterogeneity and the importance of maintaining pedagogical autonomy as a prerequisite for adoption. We discuss implications for future school deployment and outline partnerships for longitudinal classroom implementation.},
-	urldate = {2026-02-03},
-	publisher = {arXiv},
-	author = {Gonnermann-Müller, Jana and Haase, Jennifer and Leins, Nicolas and Igel, Moritz and Fackeldey, Konstantin and Pokutta, Sebastian},
-	month = jan,
-	year = {2026},
-	note = {arXiv:2601.22788 [cs]},
-	keywords = {Computer Science - Human-Computer Interaction},
-	file = {Preprint PDF:/Users/nleins/Zotero/storage/DEC5HR6F/Gonnermann-Müller et al. - 2026 - FACET Multi-Agent AI Supporting Teachers in Scaling Differentiated Learning for Diverse Students.pdf:application/pdf;Snapshot:/Users/nleins/Zotero/storage/WYK9WV96/2601.html:text/html},
-}
-
 @misc{leins_investigating_2026,
 	title = {Investigating the {Influence} of {Spatial} {Ability} in {Augmented} {Reality}-assisted {Robot} {Programming}},
 	url = {http://arxiv.org/abs/2602.03544},
@@ -145,4 +114,29 @@
 	note = {arXiv:2608.00685 [cs.AI]},
 	keywords = {Computer Science - Artificial Intelligence},
 	file = {Preprint PDF:/Users/nleins/Zotero/storage/L9PIVD4D/Leins et al. - 2026 - When Does LLM Orchestration Pay Off A Controlled Evaluation of Accuracy, Cost, and Task Difficulty.pdf:application/pdf;Snapshot:/Users/nleins/Zotero/storage/ZQ4NYTCK/2608.html:text/html},
+}
+
+@inproceedings{haase_within-model_2026,
+	title = {Within-{Model} vs {Between}-{Prompt} {Variability} in {Large} {Language} {Models} for {Creative} {Tasks}},
+	url = {https://openreview.net/forum?id=d535njwZHX#discussion},
+	abstract = {When a large language model (LLM) generates a creative response, how much of the outcome is determined by the prompt, the model, the task, or pure sampling luck? We address this question with a variance decomposition over 89,806 generations from 10 LLMs, 6 prompt strategies, and 30 Alternative Uses Task items, which is one of the most widely used creativity tests. For output quality (originality), the results invert common assumptions: the AUT item being evaluated and the prompt strategy together account for over 72\% of variance, while model choice contributes less than 8\% and within-LLM stochasticity alone exceeds model differences by more than 2×. Controlling for the AUT item sharpens the picture further: prompt strategy then explains 3.4× the variance of model choice. For output quantity (fluency), the pattern reverses, with the LLM being the dominant factor. We further show that prompts shape output distributions, not point estimates: “discriminative” prompts (e.g., Persona) widen the quality distribution and show higher peaks in capable models, while “constraining” prompts (e.g., Format) compress it. Together, these results argue that single-sample LLM evaluations are unreliable for open-ended tasks, and that evaluation designs must account for the full variance structure of generative systems.},
+	language = {en},
+	urldate = {2026-10-20},
+	author = {Haase, Jennifer and Gonnermann-Müller, Jana and Hanel, Paul H. P. and Leins, Nicolas and Kosch, Thomas and Mendling, Jan and Pokutta, Sebastian},
+	month = sep,
+	year = {2026},
+	file = {Full Text PDF:/Users/nleins/Zotero/storage/6YJGUXVG/Haase et al. - 2026 - Within-Model vs Between-Prompt Variability in Large Language Models for Creative Tasks.pdf:application/pdf},
+}
+
+@inproceedings{gonnermann-muller_facet_2026,
+	title = {{FACET}: {Multi}-{Agent} {AI} {Supporting} {Teachers} in {Scaling} {Differentiated} {Learning} for {Diverse} {Students}},
+	url = {https://doi.org/10.24963/ijcai.2026/797},
+	doi = {10.24963/ijcai.2026/797},
+	booktitle = {Proceedings of the {Thirty}-{Fifth} {International} {Joint} {Conference} on {Artificial} {Intelligence}, {IJCAI}-26},
+	publisher = {International Joint Conferences on Artificial Intelligence Organization},
+	author = {Gonnermann-Müller, Jana and Haase, Jennifer and Leins, Nicolas and Igel, Moritz and Fackeldey, Konstantin and Pokutta, Sebastian},
+	editor = {Calvanese, Diego},
+	month = aug,
+	year = {2026},
+	pages = {7165--7173},
 }

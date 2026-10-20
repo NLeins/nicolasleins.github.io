@@ -26,5 +26,7 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - .agents
   - tests
   - "Personal Publications.bib"
+  - "Personal Publications biblatex.bib"

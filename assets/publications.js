@@ -57,7 +57,7 @@
 
     copyText(button.getAttribute('data-bibtex') || '').then(function () {
       button.textContent = 'Copied';
-      status.textContent = 'BibTeX citation copied.';
+      status.textContent = 'Citation copied.';
       resetTimers.set(button, window.setTimeout(function () {
         button.textContent = 'Cite';
         status.textContent = '';

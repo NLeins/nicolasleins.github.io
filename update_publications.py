@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
 """
-Parse BibTeX file and generate publications.md for Jekyll site.
-Usage: python update_publications.py
+Parse the Zotero BibLaTeX export and generate publication files for Jekyll.
+Usage: python3 update_publications.py
 """
 
 import re
 import html
 from collections import defaultdict
+from datetime import date as calendar_date
 from pathlib import Path
 from urllib.parse import urlsplit
+
+# Keep one active export; do not merge it with the legacy BibTeX file.
+PUBLICATIONS_SOURCE = Path("Personal Publications biblatex.bib")
 
 # Publication shown on the home page. Change this cite key to feature another entry.
 FEATURED_PUBLICATION_KEY = 'leins_when_2026'
@@ -92,38 +96,6 @@ def month_num_to_name(month_num: int) -> str:
         return ""
 
 
-_DATE_LIKE_FIELDS = ("date", "eventdate", "issued", "published", "urldate")
-_YYYY_MM_RE = re.compile(r"(?P<y>\d{4})-(?P<m>\d{1,2})(?:-(?P<d>\d{1,2}))?")
-
-
-def inferred_month_num(entry: dict) -> int:
-    """
-    Get best-guess month for an entry.
-
-    Prefer explicit BibTeX `month`. If missing, fall back to common date-like
-    fields (e.g., `date`, `eventdate`, `urldate`) in YYYY-MM(-DD) form.
-    """
-    m = month_to_num(entry.get("month"))
-    if m:
-        return m
-
-    for k in _DATE_LIKE_FIELDS:
-        v = entry.get(k)
-        if not v:
-            continue
-        mobj = _YYYY_MM_RE.search(str(v))
-        if not mobj:
-            continue
-        try:
-            mm = int(mobj.group("m"))
-        except (TypeError, ValueError):
-            continue
-        if 1 <= mm <= 12:
-            return mm
-
-    return 0
-
-
 def year_to_int(year):
     """Convert year string to int; unknown -> 0."""
     try:
@@ -132,8 +104,62 @@ def year_to_int(year):
         return 0
 
 
+_PUBLICATION_DATE_RE = re.compile(
+    r"^(?P<year>\d{4})(?:-(?P<month>\d{2})(?:-(?P<day>\d{2}))?)?$"
+)
+
+
+def publication_date_parts(entry):
+    """Return publication (year, month, day), preserving missing date precision.
+
+    Prefer BibLaTeX `date`, otherwise explicit BibTeX `year`/`month`.
+    Unknown components are zero; access/event dates are not publication dates.
+    """
+    match = _PUBLICATION_DATE_RE.fullmatch(str(entry.get("date", "")).strip())
+    if match:
+        year = int(match.group("year"))
+        month = int(match.group("month") or 0)
+        day = int(match.group("day") or 0)
+        try:
+            calendar_date(
+                year, int(match.group("month") or 1), int(match.group("day") or 1)
+            )
+        except ValueError:
+            pass
+        else:
+            return year, month, day
+
+    year = year_to_int(entry.get("year"))
+    month = month_to_num(entry.get("month"))
+    return (
+        year if 1 <= year <= 9999 else 0,
+        month if 1 <= month <= 12 else 0,
+        0,
+    )
+
+
+def inferred_month_num(entry):
+    """Return the supplied publication month, never an access-date month."""
+    return publication_date_parts(entry)[1]
+
+
+def publication_year(entry):
+    """Return the year used for grouping both BibTeX and BibLaTeX entries."""
+    year = publication_date_parts(entry)[0]
+    return str(year) if year else "Unknown"
+
+
+def format_publication_date(entry):
+    """Format publication month/year without inventing missing components."""
+    year, month, _ = publication_date_parts(entry)
+    return " ".join(
+        part for part in (month_num_to_name(month), str(year) if year else "")
+        if part
+    )
+
+
 def parse_bibtex(bib_content):
-    """Parse BibTeX content and return list of entries."""
+    """Parse BibTeX/BibLaTeX content, retaining the source's field names."""
     entries = []
 
     # Find all entry starts
@@ -255,7 +281,7 @@ def _bibtex_escape_value(value: str) -> str:
 
 
 def bibtex_from_entry(entry: dict) -> str:
-    """Create a BibTeX snippet for clipboard copy."""
+    """Create a citation using the source's BibTeX or BibLaTeX fields."""
     entry_type = entry.get("type", "misc")
     cite_key = entry.get("cite_key", "missing_key")
 
@@ -264,13 +290,18 @@ def bibtex_from_entry(entry: dict) -> str:
         "title",
         "author",
         "journal",
+        "journaltitle",
         "booktitle",
+        "eventtitle",
         "publisher",
+        "date",
         "year",
         "month",
         "pages",
         "doi",
         "url",
+        "eprinttype",
+        "eprint",
         "note",
     ]
 
@@ -296,18 +327,40 @@ def bibtex_from_entry(entry: dict) -> str:
     return "\n".join(lines)
 
 
+def display_venue(entry):
+    """Resolve journal/proceedings/conference fields without changing citations."""
+    fields = {
+        re.sub(r"[\s_-]+", "", name).lower(): value
+        for name, value in entry.items()
+        if isinstance(value, str) and value.strip()
+    }
+    # Support standard BibTeX/BibLaTeX keys and reference-manager field aliases.
+    for field in (
+        "journal", "journaltitle", "booktitle", "proceedingstitle",
+        "conferencename", "conference", "eventtitle",
+    ):
+        venue = clean_braces(fields.get(field, "")).strip()
+        if venue:
+            return venue
+    return ""
+
+
 def publication_type_label(entry):
     """Return a conservative paper-type label from explicit publication metadata."""
     entry_type = entry.get("type", "").lower()
-    journal = entry.get("journal", "")
-    venue = clean_braces(entry.get("booktitle") or journal).lower()
+    journal = entry.get("journal") or entry.get("journaltitle", "")
+    venue = display_venue(entry).lower()
     if entry_type in {"inproceedings", "conference"} or re.search(
         r"\b(proceedings|conference)\b", venue
     ):
         return "Conference paper"
-    if entry_type == "article" and journal and "arxiv" not in venue:
+    if entry_type == "article" and journal.strip() and "arxiv" not in venue:
         return "Journal article"
-    archive_fields = ("publisher", "journal", "archiveprefix", "eprinttype")
+    if entry_type == "software":
+        return "Software"
+    archive_fields = (
+        "publisher", "journal", "journaltitle", "archiveprefix", "eprinttype"
+    )
     arxiv_metadata = any(
         clean_braces(str(entry.get(field, ""))).strip().lower() == "arxiv"
         for field in archive_fields
@@ -356,27 +409,13 @@ def format_entry(entry):
 
     # Venue and year
     venue_parts = []
-    if 'journal' in entry:
-        journal = clean_braces(entry['journal'])
-        venue_parts.append(journal)
-    elif 'booktitle' in entry:
-        booktitle = clean_braces(entry['booktitle'])
-        venue_parts.append(booktitle)
+    venue = display_venue(entry)
+    if venue:
+        venue_parts.append(venue)
 
-    # Build date string
-    date_parts = []
-    if 'month' in entry and entry.get("month"):
-        date_parts.append(entry["month"].capitalize())
-    else:
-        inferred = inferred_month_num(entry)
-        inferred_name = month_num_to_name(inferred)
-        if inferred_name:
-            date_parts.append(inferred_name)
-    if 'year' in entry:
-        date_parts.append(entry['year'])
-
-    if date_parts:
-        venue_parts.append(' '.join(date_parts))
+    date_text = format_publication_date(entry)
+    if date_text:
+        venue_parts.append(date_text)
 
     metadata = html.escape(', '.join(venue_parts))
     if paper_type:
@@ -397,7 +436,7 @@ def format_entry(entry):
     )
     links = [
         f'<button type="button" class="publication-cite" data-bibtex="{bibtex_attr}" '
-        f'aria-label="Copy BibTeX citation for {escaped_title}">Cite</button>'
+        f'aria-label="Copy citation for {escaped_title}">Cite</button>'
     ]
 
     url = entry.get("url", "")
@@ -449,19 +488,9 @@ def generate_featured_publication(entries):
         url = f"https://doi.org/{entry['doi']}"
     url = url or "/publications/"
 
-    venue = (
-        entry.get("journal")
-        or entry.get("booktitle")
-        or entry.get("publisher", "")
-    )
-    venue = clean_braces(venue)
-    date_parts = []
-    month_name = month_num_to_name(inferred_month_num(entry))
-    if month_name:
-        date_parts.append(month_name)
-    if entry.get("year"):
-        date_parts.append(entry["year"])
-    metadata = ", ".join(part for part in [venue, " ".join(date_parts)] if part)
+    venue = display_venue(entry) or clean_braces(entry.get("publisher", ""))
+    date_text = format_publication_date(entry)
+    metadata = ", ".join(part for part in [venue, date_text] if part)
 
     lines = [
         "<!-- Generated by update_publications.py; do not edit manually. -->",
@@ -501,7 +530,7 @@ def generate_publications_md(entries, scholar_id=None):
     # Group entries by year
     by_year = defaultdict(list)
     for entry in entries:
-        year = entry.get('year', 'Unknown')
+        year = publication_year(entry)
         by_year[year].append(entry)
 
     # Sort years descending (numeric if possible)
@@ -536,8 +565,7 @@ def generate_publications_md(entries, scholar_id=None):
 
         by_year[year].sort(
             key=lambda e: (
-                year_to_int(e.get('year')),
-                inferred_month_num(e),
+                publication_date_parts(e),
                 clean_braces(e.get('title', '')).lower(),
             ),
             reverse=True,
@@ -570,8 +598,8 @@ def generate_publications_md(entries, scholar_id=None):
 
 def main():
     """Main function."""
-    # Read BibTeX file
-    bib_file = Path("Personal Publications.bib")
+    # Read the active Zotero BibLaTeX export, not the legacy BibTeX file.
+    bib_file = PUBLICATIONS_SOURCE
 
     if not bib_file.exists():
         print(f"Error: {bib_file} not found!")
@@ -581,7 +609,7 @@ def main():
     bib_content = bib_file.read_text(encoding='utf-8')
 
     # Parse entries
-    print("Parsing BibTeX entries...")
+    print("Parsing BibLaTeX entries...")
     entries = parse_bibtex(bib_content)
     print(f"Found {len(entries)} entries")
 
