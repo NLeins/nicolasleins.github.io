@@ -689,6 +689,9 @@ summary:focus-visible {
 
 /* Existing header and navigation */
 .site-header {
+  /* Keep the dropdown above the portrait's isolated stacking context. */
+  position: relative;
+  z-index: 10;
   background-color: $header-color;
   border-bottom: none;
   box-shadow: 0 2px 4px rgba($header-color, 0.1);
